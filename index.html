@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>EstudiApp — Descarga e Instalación</title>
+  <title>EstudiApp — Demo y Descarga</title>
   <meta name="description" content="Organización académica, planificación de tareas, evaluaciones y horarios para estudiantes.">
   <meta name="theme-color" content="#7C3AED">
   <style>
@@ -32,7 +32,7 @@
       --radius-lg: 22px;
       --radius-pill: 999px;
       --shadow-card: 0 8px 18px rgba(27, 21, 48, 0.08);
-      --shadow-hero: 0 8px 24px rgba(124, 58, 237, 0.20);
+      --shadow-hero: 0 8px 24px rgba(124, 58, 237, 0.22);
     }
 
     body {
@@ -53,14 +53,14 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 40px 0 32px;
-      gap: 24px;
+      padding: 36px 0 32px;
+      gap: 22px;
     }
 
     /* ── Logo ── */
     .logo-wrap {
-      width: 84px;
-      height: 84px;
+      width: 80px;
+      height: 80px;
       border-radius: var(--radius-lg);
       background: var(--surface);
       box-shadow: var(--shadow-hero);
@@ -68,7 +68,7 @@
       align-items: center;
       justify-content: center;
       overflow: hidden;
-      padding: 10px;
+      padding: 8px;
     }
 
     .logo-wrap img {
@@ -77,12 +77,12 @@
       object-fit: contain;
     }
 
-    /* ── Header ── */
+    /* ── Encabezado ── */
     .hero {
       text-align: center;
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 8px;
     }
 
     .hero h1 {
@@ -101,7 +101,7 @@
       font-size: 15px;
       line-height: 1.5;
       color: var(--muted);
-      max-width: 380px;
+      max-width: 390px;
       margin: 0 auto;
     }
 
@@ -111,32 +111,51 @@
       background: var(--surface);
       border-radius: var(--radius-lg);
       box-shadow: var(--shadow-card);
-      padding: 24px;
+      padding: 22px;
     }
 
-    /* ── Descarga ── */
-    .download-card {
+    /* ── Tarjeta Demo Interactiva (Principal) ── */
+    .demo-card {
       display: flex;
       flex-direction: column;
-      gap: 18px;
+      gap: 14px;
+      border: 2px solid var(--primary-dim);
+      background: linear-gradient(180deg, #FFFFFF 0%, #FAF8FF 100%);
+      text-align: center;
     }
 
-    .platform-badge {
+    .badge-wrap {
+      display: flex;
+      justify-content: center;
+    }
+
+    .badge-demo {
       display: inline-flex;
       align-items: center;
       gap: 6px;
       background: var(--primary-dim);
       color: var(--primary);
       font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 0.04em;
+      font-weight: 800;
+      letter-spacing: 0.05em;
       text-transform: uppercase;
-      padding: 4px 12px;
+      padding: 5px 14px;
       border-radius: var(--radius-pill);
-      width: fit-content;
     }
 
-    .btn-download {
+    .demo-card h2 {
+      font-size: 19px;
+      font-weight: 800;
+      color: var(--ink);
+    }
+
+    .demo-card p {
+      font-size: 14px;
+      line-height: 1.45;
+      color: var(--muted);
+    }
+
+    .btn-demo {
       display: flex;
       align-items: center;
       justify-content: center;
@@ -151,22 +170,83 @@
       cursor: pointer;
       text-decoration: none;
       box-shadow: var(--shadow-hero);
-      transition: opacity 0.18s ease, transform 0.18s ease;
+      transition: transform 0.15s ease, opacity 0.15s ease;
+    }
+
+    .btn-demo:hover {
+      opacity: 0.94;
+    }
+
+    .btn-demo:active {
+      transform: scale(0.98);
+      opacity: 0.88;
+    }
+
+    .btn-demo svg {
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
+    }
+
+    .demo-hint {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    /* ── Sección de Descarga APK ── */
+    .download-section {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .download-header {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .download-header h3 {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--ink);
+    }
+
+    .download-header p {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.4;
+    }
+
+    .btn-download {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      background: var(--surface-alt);
+      color: var(--ink);
+      font-size: 15px;
+      font-weight: 700;
+      padding: 14px 20px;
+      border-radius: var(--radius-pill);
+      border: 1px solid var(--border);
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.15s ease;
     }
 
     .btn-download:hover {
-      opacity: 0.92;
+      background: var(--border);
     }
 
     .btn-download:active {
       transform: scale(0.98);
-      opacity: 0.85;
     }
 
     .btn-download svg {
-      width: 20px;
-      height: 20px;
-      flex-shrink: 0;
+      width: 18px;
+      height: 18px;
+      color: var(--primary);
     }
 
     .file-meta {
@@ -175,54 +255,19 @@
       text-align: center;
     }
 
-    /* ── Aviso iOS ── */
-    .ios-card {
-      display: none;
-      text-align: center;
-      flex-direction: column;
-      gap: 12px;
-    }
-
-    .ios-badge {
-      display: inline-flex;
-      align-items: center;
-      align-self: center;
-      gap: 6px;
-      background: var(--surface-alt);
-      color: var(--muted);
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-      padding: 4px 12px;
-      border-radius: var(--radius-pill);
-    }
-
-    .ios-card h3 {
-      font-size: 17px;
-      font-weight: 700;
-      color: var(--ink);
-    }
-
-    .ios-card p {
+    /* ── Instrucciones Colapsables/Pasos ── */
+    .steps-card h4 {
       font-size: 14px;
-      line-height: 1.5;
-      color: var(--muted);
-    }
-
-    /* ── Instrucciones ── */
-    .steps-card h3 {
-      font-size: 17px;
       font-weight: 700;
-      margin-bottom: 16px;
+      margin-bottom: 12px;
       color: var(--ink);
     }
 
     .step {
       display: flex;
-      gap: 14px;
+      gap: 12px;
       align-items: flex-start;
-      padding: 12px 0;
+      padding: 10px 0;
     }
 
     .step + .step {
@@ -230,12 +275,12 @@
     }
 
     .step-num {
-      width: 26px;
-      height: 26px;
+      width: 24px;
+      height: 24px;
       border-radius: 50%;
       background: var(--primary-dim);
       color: var(--primary);
-      font-size: 12px;
+      font-size: 11px;
       font-weight: 800;
       display: flex;
       align-items: center;
@@ -244,7 +289,7 @@
     }
 
     .step-text {
-      font-size: 14px;
+      font-size: 13px;
       line-height: 1.45;
       color: var(--ink);
       padding-top: 2px;
@@ -256,9 +301,25 @@
 
     .step-text .subtle {
       color: var(--muted);
-      font-size: 12px;
+      font-size: 11px;
       display: block;
       margin-top: 2px;
+    }
+
+    /* ── Aviso iOS para descarga ── */
+    .ios-note {
+      display: none;
+      background: var(--surface-alt);
+      border-radius: var(--radius-md);
+      padding: 12px 14px;
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.45;
+      text-align: center;
+    }
+
+    .ios-note strong {
+      color: var(--ink);
     }
 
     /* ── Módulos ── */
@@ -266,27 +327,27 @@
       width: 100%;
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 12px;
+      gap: 10px;
     }
 
     .feature-card {
       background: var(--surface);
       border-radius: var(--radius-md);
       box-shadow: var(--shadow-card);
-      padding: 16px;
+      padding: 14px;
       display: flex;
       flex-direction: column;
-      gap: 6px;
+      gap: 4px;
     }
 
     .feature-title {
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 700;
       color: var(--ink);
     }
 
     .feature-desc {
-      font-size: 12px;
+      font-size: 11px;
       line-height: 1.4;
       color: var(--muted);
     }
@@ -295,7 +356,7 @@
     .footer {
       width: 100%;
       text-align: center;
-      padding: 16px 0 24px;
+      padding: 14px 0 20px;
       border-top: 1px solid var(--border);
       display: flex;
       flex-direction: column;
@@ -325,109 +386,113 @@
     <!-- Encabezado -->
     <div class="hero">
       <h1>Organización académica con <span>EstudiApp</span></h1>
-      <p>Gestión de tareas, evaluaciones semestrales y horarios de clase en una sola plataforma móvil.</p>
+      <p>Gestión de tareas, evaluaciones semestrales y horarios de clase para estudiantes de educación superior.</p>
     </div>
 
-    <!-- Descarga Android -->
-    <div class="card download-card" id="section-android">
-      <div class="platform-badge">
-        <svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor">
-          <path d="M17.523 2.249a.75.75 0 0 0-1.046.205L15.1 4.528A7.987 7.987 0 0 0 12 4a7.99 7.99 0 0 0-3.1.528L7.523 2.454a.75.75 0 1 0-1.25.83l1.3 1.957A7.972 7.972 0 0 0 4 11h16a7.972 7.972 0 0 0-3.573-5.76l1.3-1.956a.75.75 0 0 0-.204-1.035zM9 9a1 1 0 1 1 0-2 1 1 0 0 1 0 2zm6 0a1 1 0 1 1 0-2 1 1 0 0 1 0 2zM4 12v7a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7H4z" />
-        </svg>
-        Android
+    <!-- 1. Tarjeta Principal: PROBAR DEMO INTERACTIVA (iPhone, Android y PC) -->
+    <div class="card demo-card">
+      <div class="badge-wrap">
+        <div class="badge-demo">
+          <svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor">
+            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+          </svg>
+          Demo en vivo
+        </div>
       </div>
+      <h2>Pruébala ahora en tu navegador</h2>
+      <p>Sin instalar nada. Accede directamente a la demostración con asignaturas, notas y horarios del <strong>3er Semestre de Logística (CFT Lota Arauco)</strong>.</p>
+      
+      <a href="./demo/" class="btn-demo" id="btn-demo">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M8 5v14l11-7z" />
+        </svg>
+        Probar Demo Interactiva
+      </a>
+      <span class="demo-hint">Acceso automático · Funciona en iPhone, Android y computador</span>
+    </div>
+
+    <!-- Resumen de características de la app -->
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-title">Tareas y subtareas</div>
+        <div class="feature-desc">Desglose de entregas y control de avance por asignatura.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-title">Recordatorios</div>
+        <div class="feature-desc">Avisos locales para entregas y certámenes próximos.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-title">Horario lectivo</div>
+        <div class="feature-desc">Visualización de clases de lunes a viernes con salas.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-title">Notas con ponderación</div>
+        <div class="feature-desc">Cálculo de promedios según la escala chilena (1.0 a 7.0).</div>
+      </div>
+    </div>
+
+    <!-- 2. Tarjeta Secundaria: DESCARGA DE APK PARA ANDROID -->
+    <div class="card download-section" id="section-download-android">
+      <div class="download-header">
+        <h3>¿Te gustó la experiencia? Instálala en Android</h3>
+        <p>Descarga el archivo instalador oficial para utilizar EstudiApp de forma nativa en tu teléfono.</p>
+      </div>
+
       <a href="https://expo.dev/artifacts/eas/Bba4hUY130ZMoHflFOfN3XTcJl9DxgFf9wi-ytfTEcw.apk" class="btn-download" id="btn-apk">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
           <polyline points="7 10 12 15 17 10" />
           <line x1="12" y1="15" x2="12" y2="3" />
         </svg>
-        Descargar APK
+        Descargar APK para Android
       </a>
       <p class="file-meta">Archivo APK · 101 MB · Compatible con Android 7.0 o superior</p>
-    </div>
 
-    <!-- Información para usuarios iOS -->
-    <div class="card ios-card" id="section-ios">
-      <div class="ios-badge">Dispositivo iOS detectado</div>
-      <h3>Disponible actualmente en Android</h3>
-      <p>La distribución mediante archivo instalador APK solo es compatible con dispositivos Android. La versión para iOS se encuentra en etapa de preparación para su publicación en App Store.</p>
-    </div>
-
-    <!-- Instrucciones de instalación -->
-    <div class="card steps-card" id="section-steps">
-      <h3>Instrucciones de instalación</h3>
-      <div class="step">
-        <div class="step-num">1</div>
-        <div class="step-text">Presione el botón <strong>"Descargar APK"</strong>.</div>
-      </div>
-      <div class="step">
-        <div class="step-num">2</div>
-        <div class="step-text">
-          Abra el archivo descargado una vez finalizada la transferencia.
-          <span class="subtle">Disponible en el panel de notificaciones o en la carpeta Descargas del teléfono.</span>
+      <!-- Pasos de instalación -->
+      <div class="steps-card">
+        <h4>Pasos de instalación en Android:</h4>
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-text">Presione el botón <strong>"Descargar APK para Android"</strong>.</div>
         </div>
-      </div>
-      <div class="step">
-        <div class="step-num">3</div>
-        <div class="step-text">
-          Si el sistema solicita autorización, seleccione <strong>"Configuración"</strong> y active la opción <strong>"Permitir desde esta fuente"</strong>.
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-text">Abra el archivo descargado en las notificaciones del teléfono.</div>
         </div>
-      </div>
-      <div class="step">
-        <div class="step-num">4</div>
-        <div class="step-text">
-          Seleccione <strong>"Instalar"</strong> y luego <strong>"Abrir"</strong>.
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-text">Si aparece un aviso, seleccione <strong>"Configuración"</strong> y active <strong>"Permitir desde esta fuente"</strong>.</div>
         </div>
-      </div>
-      <div class="step">
-        <div class="step-num">5</div>
-        <div class="step-text">
-          Registre su cuenta de usuario para acceder a la sincronización de asignaturas y evaluaciones.
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-text">Seleccione <strong>"Instalar"</strong> y luego <strong>"Abrir"</strong>.</div>
         </div>
       </div>
     </div>
 
-    <!-- Resumen de características -->
-    <div class="features-grid">
-      <div class="feature-card">
-        <div class="feature-title">Tareas y subtareas</div>
-        <div class="feature-desc">Desglose de entregas y avance estructurado por asignatura.</div>
-      </div>
-      <div class="feature-card">
-        <div class="feature-title">Recordatorios</div>
-        <div class="feature-desc">Avisos locales configurables para evaluaciones próximas.</div>
-      </div>
-      <div class="feature-card">
-        <div class="feature-title">Calendario semanal</div>
-        <div class="feature-desc">Visualización integrada de horario lectivo y fechas de examen.</div>
-      </div>
-      <div class="feature-card">
-        <div class="feature-title">Seguimiento de notas</div>
-        <div class="feature-desc">Cálculo de ponderaciones y promedios semestrales (escala 1.0 a 7.0).</div>
-      </div>
+    <!-- Nota para iPhone si detecta iOS -->
+    <div class="ios-note" id="section-ios-note">
+      <strong>¿Tienes iPhone?</strong> Puedes utilizar la demo interactiva en Safari y agregarla a tu pantalla de inicio con la opción <em>"Compartir → Agregar al inicio"</em> mientras finalizamos la publicación en App Store.
     </div>
 
     <!-- Pie de página formal -->
     <footer class="footer">
       <div class="footer-title">EstudiApp</div>
-      <div class="footer-sub">Plataforma de Apoyo Académico · Versión 1.0 (Android)</div>
+      <div class="footer-sub">Plataforma de Apoyo Académico · Versión 1.0</div>
     </footer>
   </div>
 
   <script>
-    // Detección de plataforma móvil
+    // Detección de dispositivo iOS
     const ua = navigator.userAgent || '';
     const isIOS = /iPad|iPhone|iPod/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
 
     if (isIOS) {
-      const androidSection = document.getElementById('section-android');
-      const stepsSection = document.getElementById('section-steps');
-      const iosSection = document.getElementById('section-ios');
+      const androidDownload = document.getElementById('section-download-android');
+      const iosNote = document.getElementById('section-ios-note');
 
-      if (androidSection) androidSection.style.display = 'none';
-      if (stepsSection) stepsSection.style.display = 'none';
-      if (iosSection) iosSection.style.display = 'flex';
+      // En iOS mostramos la nota informativa sobre cómo anclar la app a pantalla de inicio
+      if (iosNote) iosNote.style.display = 'block';
     }
   </script>
 </body>
