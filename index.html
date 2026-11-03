@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EstudiApp — Descarga e Instalación</title>
+  <meta name="description" content="Organización académica, planificación de tareas, evaluaciones y horarios para estudiantes.">
+  <meta name="theme-color" content="#7C3AED">
+  <style>
+    /* ── Reset & Tokens (DESIGN.md) ── */
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --primary: #7C3AED;
+      --primary-dim: #EDE9FE;
+      --primary-dark: #5B21B6;
+      --ink: #1F2433;
+      --bg: #F6F5FB;
+      --surface: #FFFFFF;
+      --surface-alt: #F2F1FA;
+      --muted: #4B5563;
+      --border: #E8E7F1;
+      --radius-sm: 10px;
+      --radius-md: 16px;
+      --radius-lg: 22px;
+      --radius-pill: 999px;
+      --shadow-card: 0 8px 18px rgba(27, 21, 48, 0.08);
+      --shadow-hero: 0 8px 24px rgba(124, 58, 237, 0.20);
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 0 20px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .container {
+      max-width: 440px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 0 32px;
+      gap: 24px;
+    }
+
+    /* ── Logo ── */
+    .logo-wrap {
+      width: 84px;
+      height: 84px;
+      border-radius: var(--radius-lg);
+      background: var(--surface);
+      box-shadow: var(--shadow-hero);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      padding: 10px;
+    }
+
+    .logo-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    /* ── Header ── */
+    .hero {
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .hero h1 {
+      font-size: 26px;
+      font-weight: 800;
+      line-height: 1.2;
+      letter-spacing: -0.01em;
+      color: var(--ink);
+    }
+
+    .hero h1 span {
+      color: var(--primary);
+    }
+
+    .hero p {
+      font-size: 15px;
+      line-height: 1.5;
+      color: var(--muted);
+      max-width: 380px;
+      margin: 0 auto;
+    }
+
+    /* ── Tarjetas ── */
+    .card {
+      width: 100%;
+      background: var(--surface);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-card);
+      padding: 24px;
+    }
+
+    /* ── Descarga ── */
+    .download-card {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .platform-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--primary-dim);
+      color: var(--primary);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      padding: 4px 12px;
+      border-radius: var(--radius-pill);
+      width: fit-content;
+    }
+
+    .btn-download {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      background: var(--primary);
+      color: #FFFFFF;
+      font-size: 16px;
+      font-weight: 700;
+      padding: 16px 24px;
+      border-radius: var(--radius-pill);
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      box-shadow: var(--shadow-hero);
+      transition: opacity 0.18s ease, transform 0.18s ease;
+    }
+
+    .btn-download:hover {
+      opacity: 0.92;
+    }
+
+    .btn-download:active {
+      transform: scale(0.98);
+      opacity: 0.85;
+    }
+
+    .btn-download svg {
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
+    }
+
+    .file-meta {
+      font-size: 12px;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    /* ── Aviso iOS ── */
+    .ios-card {
+      display: none;
+      text-align: center;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .ios-badge {
+      display: inline-flex;
+      align-items: center;
+      align-self: center;
+      gap: 6px;
+      background: var(--surface-alt);
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      padding: 4px 12px;
+      border-radius: var(--radius-pill);
+    }
+
+    .ios-card h3 {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--ink);
+    }
+
+    .ios-card p {
+      font-size: 14px;
+      line-height: 1.5;
+      color: var(--muted);
+    }
+
+    /* ── Instrucciones ── */
+    .steps-card h3 {
+      font-size: 17px;
+      font-weight: 700;
+      margin-bottom: 16px;
+      color: var(--ink);
+    }
+
+    .step {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      padding: 12px 0;
+    }
+
+    .step + .step {
+      border-top: 1px solid var(--border);
+    }
+
+    .step-num {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: var(--primary-dim);
+      color: var(--primary);
+      font-size: 12px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .step-text {
+      font-size: 14px;
+      line-height: 1.45;
+      color: var(--ink);
+      padding-top: 2px;
+    }
+
+    .step-text strong {
+      font-weight: 700;
+    }
+
+    .step-text .subtle {
+      color: var(--muted);
+      font-size: 12px;
+      display: block;
+      margin-top: 2px;
+    }
+
+    /* ── Módulos ── */
+    .features-grid {
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .feature-card {
+      background: var(--surface);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-card);
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .feature-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--ink);
+    }
+
+    .feature-desc {
+      font-size: 12px;
+      line-height: 1.4;
+      color: var(--muted);
+    }
+
+    /* ── Pie de página ── */
+    .footer {
+      width: 100%;
+      text-align: center;
+      padding: 16px 0 24px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .footer-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--ink);
+    }
+
+    .footer-sub {
+      font-size: 12px;
+      color: var(--muted);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <!-- Logotipo -->
+    <div class="logo-wrap">
+      <img src="logo.png" alt="EstudiApp" onerror="this.style.display='none'; this.parentElement.innerText='EA'">
+    </div>
+
+    <!-- Encabezado -->
+    <div class="hero">
+      <h1>Organización académica con <span>EstudiApp</span></h1>
+      <p>Gestión de tareas, evaluaciones semestrales y horarios de clase en una sola plataforma móvil.</p>
+    </div>
+
+    <!-- Descarga Android -->
+    <div class="card download-card" id="section-android">
+      <div class="platform-badge">
+        <svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor">
+          <path d="M17.523 2.249a.75.75 0 0 0-1.046.205L15.1 4.528A7.987 7.987 0 0 0 12 4a7.99 7.99 0 0 0-3.1.528L7.523 2.454a.75.75 0 1 0-1.25.83l1.3 1.957A7.972 7.972 0 0 0 4 11h16a7.972 7.972 0 0 0-3.573-5.76l1.3-1.956a.75.75 0 0 0-.204-1.035zM9 9a1 1 0 1 1 0-2 1 1 0 0 1 0 2zm6 0a1 1 0 1 1 0-2 1 1 0 0 1 0 2zM4 12v7a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7H4z" />
+        </svg>
+        Android
+      </div>
+      <a href="https://expo.dev/artifacts/eas/Bba4hUY130ZMoHflFOfN3XTcJl9DxgFf9wi-ytfTEcw.apk" class="btn-download" id="btn-apk">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+          <polyline points="7 10 12 15 17 10" />
+          <line x1="12" y1="15" x2="12" y2="3" />
+        </svg>
+        Descargar APK
+      </a>
+      <p class="file-meta">Archivo APK · 101 MB · Compatible con Android 7.0 o superior</p>
+    </div>
+
+    <!-- Información para usuarios iOS -->
+    <div class="card ios-card" id="section-ios">
+      <div class="ios-badge">Dispositivo iOS detectado</div>
+      <h3>Disponible actualmente en Android</h3>
+      <p>La distribución mediante archivo instalador APK solo es compatible con dispositivos Android. La versión para iOS se encuentra en etapa de preparación para su publicación en App Store.</p>
+    </div>
+
+    <!-- Instrucciones de instalación -->
+    <div class="card steps-card" id="section-steps">
+      <h3>Instrucciones de instalación</h3>
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-text">Presione el botón <strong>"Descargar APK"</strong>.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-text">
+          Abra el archivo descargado una vez finalizada la transferencia.
+          <span class="subtle">Disponible en el panel de notificaciones o en la carpeta Descargas del teléfono.</span>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-text">
+          Si el sistema solicita autorización, seleccione <strong>"Configuración"</strong> y active la opción <strong>"Permitir desde esta fuente"</strong>.
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-text">
+          Seleccione <strong>"Instalar"</strong> y luego <strong>"Abrir"</strong>.
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">5</div>
+        <div class="step-text">
+          Registre su cuenta de usuario para acceder a la sincronización de asignaturas y evaluaciones.
+        </div>
+      </div>
+    </div>
+
+    <!-- Resumen de características -->
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-title">Tareas y subtareas</div>
+        <div class="feature-desc">Desglose de entregas y avance estructurado por asignatura.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-title">Recordatorios</div>
+        <div class="feature-desc">Avisos locales configurables para evaluaciones próximas.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-title">Calendario semanal</div>
+        <div class="feature-desc">Visualización integrada de horario lectivo y fechas de examen.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-title">Seguimiento de notas</div>
+        <div class="feature-desc">Cálculo de ponderaciones y promedios semestrales (escala 1.0 a 7.0).</div>
+      </div>
+    </div>
+
+    <!-- Pie de página formal -->
+    <footer class="footer">
+      <div class="footer-title">EstudiApp</div>
+      <div class="footer-sub">Plataforma de Apoyo Académico · Versión 1.0 (Android)</div>
+    </footer>
+  </div>
+
+  <script>
+    // Detección de plataforma móvil
+    const ua = navigator.userAgent || '';
+    const isIOS = /iPad|iPhone|iPod/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+
+    if (isIOS) {
+      const androidSection = document.getElementById('section-android');
+      const stepsSection = document.getElementById('section-steps');
+      const iosSection = document.getElementById('section-ios');
+
+      if (androidSection) androidSection.style.display = 'none';
+      if (stepsSection) stepsSection.style.display = 'none';
+      if (iosSection) iosSection.style.display = 'flex';
+    }
+  </script>
+</body>
+
+</html>
