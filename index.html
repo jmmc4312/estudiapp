@@ -322,34 +322,198 @@
       color: var(--ink);
     }
 
-    /* ── Módulos ── */
-    .features-grid {
+    /* ── Características Destacadas (Diseño alternado continuo) ── */
+    .features-section {
       width: 100%;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .features-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 4px;
+    }
+
+    .features-heading {
+      font-size: 14.5px;
+      font-weight: 800;
+      color: var(--ink);
+      letter-spacing: -0.01em;
+    }
+
+    .features-subtag {
+      font-size: 10.5px;
+      font-weight: 800;
+      color: var(--primary);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .features-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    /* Temas de color: solo borde coloreado e icono, fondo interior blanco limpio */
+    .theme-postit {
+      --theme-color: #EAB308;
+      --theme-text: #A16207;
+      --theme-badge: #FEF9C3;
+    }
+
+    .theme-remind {
+      --theme-color: #8B5CF6;
+      --theme-text: #6D28D9;
+      --theme-badge: #EDE9FE;
+    }
+
+    .theme-ai {
+      --theme-color: #6366F1;
+      --theme-text: #4338CA;
+      --theme-badge: #EEF2FF;
+    }
+
+    .theme-sched {
+      --theme-color: #10B981;
+      --theme-text: #047857;
+      --theme-badge: #D1FAE5;
     }
 
     .feature-card {
-      background: var(--surface);
-      border-radius: var(--radius-md);
-      box-shadow: var(--shadow-card);
-      padding: 14px;
+      display: flex;
+      align-items: center;
+      width: 100%;
+      position: relative;
+      transition: transform 0.15s ease;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-1.5px);
+    }
+
+    /* Alternancia zigzag (imagen referencial) */
+    .feature-card.right-circle {
+      flex-direction: row;
+    }
+
+    .feature-card.left-circle {
+      flex-direction: row-reverse;
+    }
+
+    /* Cuadro rectangular: borde coloreado y fondo blanco interno */
+    .card-body {
+      flex: 1;
+      background: #FFFFFF;
+      border: 1.5px solid var(--theme-color);
+      border-radius: 14px;
+      padding: 10px 14px;
+      box-shadow: 0 2px 8px rgba(27, 21, 48, 0.04);
       display: flex;
       flex-direction: column;
-      gap: 4px;
+      justify-content: center;
+      gap: 3px;
+      min-height: 72px;
+      z-index: 1;
+      position: relative;
     }
 
-    .feature-title {
-      font-size: 13px;
-      font-weight: 700;
+    /* Solapamiento que forma las muescas con el círculo */
+    .feature-card.right-circle .card-body {
+      padding-right: 28px;
+      margin-right: -20px;
+      border-top-right-radius: 20px;
+      border-bottom-right-radius: 20px;
+    }
+
+    .feature-card.left-circle .card-body {
+      padding-left: 28px;
+      margin-left: -20px;
+      border-top-left-radius: 20px;
+      border-bottom-left-radius: 20px;
+    }
+
+    .card-title-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+    }
+
+    .card-title {
+      font-size: 13.5px;
+      font-weight: 800;
       color: var(--ink);
+      line-height: 1.25;
     }
 
-    .feature-desc {
-      font-size: 11px;
-      line-height: 1.4;
+    .card-badge {
+      font-size: 9px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      padding: 2px 6px;
+      border-radius: 5px;
+      white-space: nowrap;
+      flex-shrink: 0;
+      background: var(--theme-badge);
+      color: var(--theme-text);
+    }
+
+    .card-desc {
+      font-size: 11.5px;
       color: var(--muted);
+      line-height: 1.4;
+    }
+
+    /* Círculo representativo: mismo borde coloreado y fondo blanco interno */
+    .card-circle {
+      width: 58px;
+      height: 58px;
+      border-radius: 50%;
+      background: #FFFFFF;
+      border: 1.5px solid var(--theme-color);
+      box-shadow: 0 2px 8px rgba(27, 21, 48, 0.04);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      z-index: 2;
+      position: relative;
+      color: var(--theme-text);
+    }
+
+    .card-circle svg {
+      width: 26px;
+      height: 26px;
+      position: relative;
+      z-index: 4;
+    }
+
+    /* Puente para unir el borde del círculo con la descripción en un contorno continuo */
+    .feature-card.right-circle .card-circle::before {
+      content: "";
+      position: absolute;
+      left: -2.5px;
+      top: 12px;
+      bottom: 12px;
+      width: 6px;
+      background: #FFFFFF;
+      z-index: 3;
+    }
+
+    .feature-card.left-circle .card-circle::before {
+      content: "";
+      position: absolute;
+      right: -2.5px;
+      top: 12px;
+      bottom: 12px;
+      width: 6px;
+      background: #FFFFFF;
+      z-index: 3;
     }
 
     /* ── Pie de página ── */
@@ -411,23 +575,80 @@
       <span class="demo-hint">Acceso automático · Funciona en iPhone, Android y computador</span>
     </div>
 
-    <!-- Resumen de características de la app -->
-    <div class="features-grid">
-      <div class="feature-card">
-        <div class="feature-title">Tareas y subtareas</div>
-        <div class="feature-desc">Desglose de entregas y control de avance por asignatura.</div>
+    <!-- Características destacadas con diseño alternado continuo (imagen referencial) -->
+    <div class="features-section">
+      <div class="features-header">
+        <h3 class="features-heading">Lo más destacado de EstudiApp</h3>
+        <span class="features-subtag">Puntos clave</span>
       </div>
-      <div class="feature-card">
-        <div class="feature-title">Recordatorios</div>
-        <div class="feature-desc">Avisos locales para entregas y certámenes próximos.</div>
-      </div>
-      <div class="feature-card">
-        <div class="feature-title">Horario lectivo</div>
-        <div class="feature-desc">Visualización de clases de lunes a viernes con salas.</div>
-      </div>
-      <div class="feature-card">
-        <div class="feature-title">Notas con ponderación</div>
-        <div class="feature-desc">Cálculo de promedios según la escala chilena (1.0 a 7.0).</div>
+
+      <div class="features-list">
+        <!-- 1. Pizarrón de notas rápidas (Amarillo · Círculo Derecha) -->
+        <div class="feature-card right-circle theme-postit">
+          <div class="card-body">
+            <div class="card-title-row">
+              <span class="card-title">Pizarrón de notas rápidas</span>
+              <span class="card-badge">Post-it visual</span>
+            </div>
+            <p class="card-desc">Crea notas adhesivas por prioridad en tu pantalla principal para no olvidar ningún detalle de tus ramos.</p>
+          </div>
+          <div class="card-circle" title="Pizarrón de notas rápidas">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+              <polyline points="14 2 14 8 20 8"></polyline>
+              <line x1="8" y1="13" x2="16" y2="13"></line>
+              <line x1="8" y1="17" x2="13" y2="17"></line>
+            </svg>
+          </div>
+        </div>
+
+        <!-- 2. Recordatorios y repaso (Morado · Círculo Izquierda) -->
+        <div class="feature-card left-circle theme-remind">
+          <div class="card-body">
+            <div class="card-title-row">
+              <span class="card-title">Recordatorios y repaso</span>
+              <span class="card-badge">Sin postergar</span>
+            </div>
+            <p class="card-desc">Avisos oportunos para repasar a tiempo y bloques de 10 minutos para dar "El Primer Paso" sin sobrecarga.</p>
+          </div>
+          <div class="card-circle" title="Recordatorios de estudio">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2zm-2 1H8v-6c0-2.48 1.51-4.5 4-4.5s4 2.02 4 4.5v6z"/>
+            </svg>
+          </div>
+        </div>
+
+        <!-- 3. Asistente IA de estudio (Índigo · Círculo Derecha) -->
+        <div class="feature-card right-circle theme-ai">
+          <div class="card-body">
+            <div class="card-title-row">
+              <span class="card-title">Asistente IA de estudio</span>
+              <span class="card-badge">Dudas y fórmulas</span>
+            </div>
+            <p class="card-desc">Tu tutor académico siempre a mano. Resuelve dudas de tus materias, pide explicaciones paso a paso y resúmenes.</p>
+          </div>
+          <div class="card-circle" title="Asistente IA de estudio">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M19 9l1.25-2.75L23 5l-2.75-1.25L19 1l-1.25 2.75L15 5l2.75 1.25L19 9zm-7.5.5L9 4 6.5 9.5 1 12l5.5 2.5L9 20l2.5-5.5L17 12l-5.5-2.5zM19 15l-1.25 2.75L15 19l2.75 1.25L19 23l1.25-2.75L23 19l-2.75-1.25L19 15z"/>
+            </svg>
+          </div>
+        </div>
+
+        <!-- 4. Horario visual con salas (Verde · Círculo Izquierda) -->
+        <div class="feature-card left-circle theme-sched">
+          <div class="card-body">
+            <div class="card-title-row">
+              <span class="card-title">Horario visual con salas</span>
+              <span class="card-badge">Semana tangible</span>
+            </div>
+            <p class="card-desc">Visualiza toda tu semana de forma tangible. Identifica de un vistazo bloques libres y la sala exacta de cada clase.</p>
+          </div>
+          <div class="card-circle" title="Horario visual con salas">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2zm-7 5h5v5h-5z"/>
+            </svg>
+          </div>
+        </div>
       </div>
     </div>
 
