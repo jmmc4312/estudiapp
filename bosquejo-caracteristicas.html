@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Bosquejo — Características EstudiApp</title>
   <style>
-    /* ── Tokens de EstudiApp ── */
+    /* ── Tokens de EstudiApp (DESIGN.md) ── */
     :root {
       --primary: #7C3AED;
       --primary-dark: #5B21B6;
@@ -14,28 +14,36 @@
       --ink: #1F2433;
       --bg: #F6F5FB;
       --surface: #FFFFFF;
-      --border: #E8E7F1;
+      --border: #E5E3F0;
       --muted: #4B5563;
       
       /* Colores temáticos por característica */
-      --amber-bg: #FEF3C7;
-      --amber-ink: #B45309;
-      --amber-accent: #F59E0B;
+      /* 1. Post-it Amarillo */
+      --postit-bg: #FEF9C3;
+      --postit-border: #FACC15;
+      --postit-ink: #854D0E;
+      --postit-badge: #FEF08A;
 
-      --purple-bg: #EDE9FE;
-      --purple-ink: #6D28D9;
-      --purple-accent: #7C3AED;
+      /* 2. Recordatorios Morado */
+      --remind-bg: #EDE9FE;
+      --remind-border: #A78BFA;
+      --remind-ink: #5B21B6;
+      --remind-badge: #DDD6FE;
 
-      --blue-bg: #DBEAFE;
-      --blue-ink: #1D4ED8;
-      --blue-accent: #2563EB;
+      /* 3. Notas Ámbar / Azul */
+      --grade-bg: #DBEAFE;
+      --grade-border: #60A5FA;
+      --grade-ink: #1E40AF;
+      --grade-badge: #BFDBFE;
 
-      --emerald-bg: #D1FAE5;
-      --emerald-ink: #047857;
-      --emerald-accent: #059669;
+      /* 4. Horario Verde Esmeralda */
+      --sched-bg: #D1FAE5;
+      --sched-border: #34D399;
+      --sched-ink: #065F46;
+      --sched-badge: #A7F3D0;
 
-      --shadow-sm: 0 4px 12px rgba(27, 21, 48, 0.06);
-      --shadow-hover: 0 8px 20px rgba(124, 58, 237, 0.12);
+      --shadow-card: 0 4px 14px rgba(27, 21, 48, 0.06);
+      --shadow-circle: 0 6px 16px rgba(27, 21, 48, 0.12);
     }
 
     * {
@@ -58,16 +66,16 @@
 
     .wrapper {
       width: 100%;
-      max-width: 440px; /* Tamaño compacto acorde al teléfono */
+      max-width: 440px; /* Tamaño móvil compacto */
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      gap: 18px;
     }
 
     /* ── Encabezado del bosquejo ── */
     .header {
       text-align: center;
-      padding-bottom: 8px;
+      padding-bottom: 4px;
     }
 
     .tag {
@@ -97,38 +105,37 @@
       margin-top: 4px;
     }
 
-    /* ── Lista de tarjetas alternadas (Izquierda / Derecha) ── */
+    /* ── Lista de tarjetas alternadas en base a tu dibujo ── */
     .features-list {
       display: flex;
       flex-direction: column;
-      gap: 14px;
+      gap: 16px;
       margin-top: 6px;
     }
 
     /* 
       Estructura de la tarjeta:
-      - Rectángulo con texto
-      - Círculo acoplado en el extremo con notch/silueta
+      - Rectángulo con texto y notch lateral
+      - Círculo ensartado en el extremo
     */
     .feature-card {
       display: flex;
       align-items: center;
       width: 100%;
-      min-height: 86px;
       position: relative;
-      transition: transform 0.18s ease, box-shadow 0.18s ease;
+      transition: transform 0.18s ease;
     }
 
     .feature-card:hover {
       transform: translateY(-2px);
     }
 
-    /* 1 y 3: Texto a la izquierda, Círculo a la derecha */
+    /* 1 y 3: Texto Izquierda · Círculo Derecha */
     .feature-card.right-circle {
       flex-direction: row;
     }
 
-    /* 2 y 4: Círculo a la izquierda, Texto a la derecha */
+    /* 2 y 4: Círculo Izquierda · Texto Derecha */
     .feature-card.left-circle {
       flex-direction: row-reverse;
     }
@@ -140,28 +147,36 @@
       border: 1.5px solid var(--border);
       border-radius: 16px;
       padding: 12px 18px;
-      box-shadow: var(--shadow-sm);
+      box-shadow: var(--shadow-card);
       display: flex;
       flex-direction: column;
       justify-content: center;
       gap: 3px;
-      min-height: 82px;
+      min-height: 84px;
       z-index: 1;
+      position: relative;
     }
 
-    /* Conexión con el círculo */
+    /* Solapamiento y conexión tipo notch con el círculo */
     .feature-card.right-circle .card-body {
       padding-right: 32px;
-      margin-right: -24px; /* Solapamiento con el círculo */
+      margin-right: -24px;
       border-top-right-radius: 26px;
       border-bottom-right-radius: 26px;
     }
 
     .feature-card.left-circle .card-body {
       padding-left: 32px;
-      margin-left: -24px; /* Solapamiento con el círculo */
+      margin-left: -24px;
       border-top-left-radius: 26px;
       border-bottom-left-radius: 26px;
+    }
+
+    .card-title-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
     }
 
     .card-title {
@@ -169,18 +184,17 @@
       font-weight: 800;
       color: var(--ink);
       line-height: 1.25;
-      display: flex;
-      align-items: center;
-      gap: 6px;
     }
 
-    .card-title .highlight {
-      font-size: 10px;
+    .card-badge {
+      font-size: 9.5px;
       font-weight: 800;
       text-transform: uppercase;
       letter-spacing: 0.04em;
       padding: 2px 7px;
       border-radius: 6px;
+      white-space: nowrap;
+      flex-shrink: 0;
     }
 
     .card-desc {
@@ -191,92 +205,101 @@
 
     /* Círculo representativo */
     .card-circle {
-      width: 66px;
-      height: 66px;
+      width: 68px;
+      height: 68px;
       border-radius: 50%;
       background: var(--surface);
       border: 2px solid var(--border);
-      box-shadow: 0 4px 14px rgba(27, 21, 48, 0.1);
+      box-shadow: var(--shadow-circle);
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
-      z-index: 2; /* Por encima del borde solapado */
+      z-index: 2;
       position: relative;
     }
 
     .card-circle svg {
-      width: 28px;
-      height: 28px;
+      width: 30px;
+      height: 30px;
     }
 
-    /* Colores por tarjeta */
-    /* 1. Notas & Promedios (Ámbar) */
-    .card-theme-amber .card-circle {
-      background: var(--amber-bg);
-      border-color: var(--amber-accent);
-      color: var(--amber-ink);
+    /* ── 1. Post-it Amarillo ── */
+    .theme-postit .card-circle {
+      background: var(--postit-bg);
+      border-color: var(--postit-border);
+      color: var(--postit-ink);
     }
-    .card-theme-amber .card-title .highlight {
-      background: var(--amber-bg);
-      color: var(--amber-ink);
+    .theme-postit .card-badge {
+      background: var(--postit-badge);
+      color: var(--postit-ink);
     }
-
-    /* 2. El Primer Paso / Antiprocrastinación (Púrpura) */
-    .card-theme-purple .card-circle {
-      background: var(--purple-bg);
-      border-color: var(--purple-accent);
-      color: var(--purple-ink);
-    }
-    .card-theme-purple .card-title .highlight {
-      background: var(--purple-bg);
-      color: var(--purple-ink);
+    .theme-postit .card-body {
+      border-left: 3.5px solid var(--postit-border);
     }
 
-    /* 3. Horario & Salas (Azul) */
-    .card-theme-blue .card-circle {
-      background: var(--blue-bg);
-      border-color: var(--blue-accent);
-      color: var(--blue-ink);
+    /* ── 2. Recordatorios de estudio / El Primer Paso (Morado) ── */
+    .theme-remind .card-circle {
+      background: var(--remind-bg);
+      border-color: var(--remind-border);
+      color: var(--remind-ink);
     }
-    .card-theme-blue .card-title .highlight {
-      background: var(--blue-bg);
-      color: var(--blue-ink);
+    .theme-remind .card-badge {
+      background: var(--remind-badge);
+      color: var(--remind-ink);
     }
-
-    /* 4. Nube de Apuntes (Esmeralda) */
-    .card-theme-emerald .card-circle {
-      background: var(--emerald-bg);
-      border-color: var(--emerald-accent);
-      color: var(--emerald-ink);
-    }
-    .card-theme-emerald .card-title .highlight {
-      background: var(--emerald-bg);
-      color: var(--emerald-ink);
+    .theme-remind .card-body {
+      border-right: 3.5px solid var(--remind-border);
     }
 
-    /* ── Barra de comparación / selector ── */
-    .compare-box {
-      margin-top: 14px;
-      background: #FFFFFF;
+    /* ── 3. Cálculo de Notas (Azul) ── */
+    .theme-grade .card-circle {
+      background: var(--grade-bg);
+      border-color: var(--grade-border);
+      color: var(--grade-ink);
+    }
+    .theme-grade .card-badge {
+      background: var(--grade-badge);
+      color: var(--grade-ink);
+    }
+    .theme-grade .card-body {
+      border-left: 3.5px solid var(--grade-border);
+    }
+
+    /* ── 4. Horario con Salas (Verde Esmeralda) ── */
+    .theme-sched .card-circle {
+      background: var(--sched-bg);
+      border-color: var(--sched-border);
+      color: var(--sched-ink);
+    }
+    .theme-sched .card-badge {
+      background: var(--sched-badge);
+      color: var(--sched-ink);
+    }
+    .theme-sched .card-body {
+      border-right: 3.5px solid var(--sched-border);
+    }
+
+    /* ── Cuadro de explicación ── */
+    .info-box {
+      margin-top: 10px;
+      background: var(--surface);
       border: 1px dashed var(--border);
       border-radius: 14px;
-      padding: 14px;
+      padding: 14px 16px;
       font-size: 12px;
       color: var(--muted);
       line-height: 1.45;
     }
 
-    .compare-box strong {
+    .info-box strong {
       color: var(--ink);
     }
 
-    .compare-box code {
-      background: var(--bg);
-      padding: 1px 5px;
-      border-radius: 4px;
-      font-size: 11px;
+    /* Mini ilustración post-it en svg */
+    .postit-icon {
+      filter: drop-shadow(0 2px 4px rgba(133, 77, 14, 0.15));
     }
   </style>
 </head>
@@ -286,88 +309,93 @@
     <!-- Encabezado de la sección -->
     <div class="header">
       <span class="tag">Bosquejo Referencial</span>
-      <h2>Lo que hace única a EstudiApp</h2>
-      <p>Diseñada específicamente para el ritmo de la educación superior en Chile.</p>
+      <h2>Puntos fuertes de EstudiApp</h2>
+      <p>Herramientas que marcan la diferencia en el día a día académico.</p>
     </div>
 
-    <!-- Lista de tarjetas alternadas en base a tu bosquejo -->
+    <!-- Lista de 4 tarjetas con el patrón alternado de tu bosquejo -->
     <div class="features-list">
 
-      <!-- TARJETA 1: Texto Izquierda · Círculo Derecha (Notas y Meta de Aprobación) -->
-      <div class="feature-card right-circle card-theme-amber">
+      <!-- TARJETA 1: Texto Izquierda · Círculo Derecha (PIZARRÓN DE POST-IT) -->
+      <div class="feature-card right-circle theme-postit">
         <div class="card-body">
-          <div class="card-title">
-            Notas y cuánto necesitas
-            <span class="highlight">Escala 1.0 - 7.0</span>
+          <div class="card-title-row">
+            <span class="card-title">Pizarrón de notas (Post-it)</span>
+            <span class="card-badge">Tablero visual</span>
           </div>
-          <p class="card-desc">Cálculo de promedios ponderados y predicción exacta de la nota que necesitas para aprobar o eximirte.</p>
+          <p class="card-desc">Crea notas rápidas adhesivas con nivel de prioridad. Guarda ideas al instante para no olvidar ningún detalle de tus ramos.</p>
         </div>
-        <div class="card-circle" title="Notas y Ponderaciones">
-          <!-- Icono Trofeo / Nota -->
+        <div class="card-circle" title="Pizarrón de notas rápidas">
+          <!-- Icono representativo de Post-it -->
+          <svg class="postit-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+            <polyline points="14 2 14 8 20 8"></polyline>
+            <line x1="8" y1="13" x2="16" y2="13"></line>
+            <line x1="8" y1="17" x2="13" y2="17"></line>
+          </svg>
+        </div>
+      </div>
+
+      <!-- TARJETA 2: Círculo Izquierda · Texto Derecha (RECORDATORIOS DE ESTUDIO / EL PRIMER PASO) -->
+      <div class="feature-card left-circle theme-remind">
+        <div class="card-body">
+          <div class="card-title-row">
+            <span class="card-title">Recordatorios y repaso</span>
+            <span class="card-badge">Sin postergar</span>
+          </div>
+          <p class="card-desc">Avisos oportunos para repasar antes de certámenes y dar "El Primer Paso" en bloques de 10 minutos sin abrumarte.</p>
+        </div>
+        <div class="card-circle" title="Recordatorios de estudio">
+          <!-- Icono representativo de Recordatorio amable con destello -->
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2zm-2 1H8v-6c0-2.48 1.51-4.5 4-4.5s4 2.02 4 4.5v6z"/>
+          </svg>
+        </div>
+      </div>
+
+      <!-- TARJETA 3: Texto Izquierda · Círculo Derecha (CÁLCULO DE NOTAS Y CUÁNTO NECESITAS) -->
+      <div class="feature-card right-circle theme-grade">
+        <div class="card-body">
+          <div class="card-title-row">
+            <span class="card-title">Notas y cuánto necesitas</span>
+            <span class="card-badge">Escala 1.0 - 7.0</span>
+          </div>
+          <p class="card-desc">Ponderaciones automáticas que te indican la nota exacta que requieres en la siguiente prueba para aprobar o eximirte.</p>
+        </div>
+        <div class="card-circle" title="Notas y Meta de Aprobación">
+          <!-- Icono representativo de Escala de Notas / Meta -->
           <svg viewBox="0 0 24 24" fill="currentColor">
             <path d="M19 5h-2V3H7v2H5c-1.1 0-2 .9-2 2v1c0 2.55 1.92 4.63 4.39 4.94A5.01 5.01 0 0011 15.9V19H7v2h10v-2h-4v-3.1a5.01 5.01 0 003.61-2.96C19.08 12.63 21 10.55 21 8V7c0-1.1-.9-2-2-2zM5 8V7h2v3.82C5.84 10.4 5 9.3 5 8zm14 0c0 1.3-.84 2.4-2 2.82V7h2v1z"/>
           </svg>
         </div>
       </div>
 
-      <!-- TARJETA 2: Círculo Izquierda · Texto Derecha (Antiprocrastinación / El Primer Paso) -->
-      <div class="feature-card left-circle card-theme-purple">
+      <!-- TARJETA 4: Círculo Izquierda · Texto Derecha (HORARIO SEMANAL CON SALAS) -->
+      <div class="feature-card left-circle theme-sched">
         <div class="card-body">
-          <div class="card-title">
-            "El Primer Paso": adiós al postergar
-            <span class="highlight">10 min</span>
+          <div class="card-title-row">
+            <span class="card-title">Horario lectivo con salas</span>
+            <span class="card-badge">Clases y certámenes</span>
           </div>
-          <p class="card-desc">Pasitos diminutos para romper la inercia sin estrés. Un empujón amable cuando más cuesta sentarse a estudiar.</p>
+          <p class="card-desc">Visualiza tus clases semanales con su sala correspondiente y la cuenta regresiva de días para cada entrega importante.</p>
         </div>
-        <div class="card-circle" title="El Primer Paso">
-          <!-- Icono Destello / Comienzo -->
-          <svg viewBox="0 0 24 24" fill="currentColor">
-            <path d="M12 2l2.4 7.2h7.6l-6 4.8 2.3 7.2-6.3-4.5-6.3 4.5 2.3-7.2-6-4.8h7.6z"/>
-          </svg>
-        </div>
-      </div>
-
-      <!-- TARJETA 3: Texto Izquierda · Círculo Derecha (Horario con Salas y Calendario) -->
-      <div class="feature-card right-circle card-theme-blue">
-        <div class="card-body">
-          <div class="card-title">
-            Horario lectivo con salas
-            <span class="highlight">Semana y Mes</span>
-          </div>
-          <p class="card-desc">Tus clases con sala y profesor cruzadas con tus entregas de tareas y días restantes para cada certamen.</p>
-        </div>
-        <div class="card-circle" title="Horario y Salas">
-          <!-- Icono Calendario / Reloj -->
+        <div class="card-circle" title="Horario con Salas">
+          <!-- Icono representativo de Horario y Calendario -->
           <svg viewBox="0 0 24 24" fill="currentColor">
             <path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2zm-7 5h5v5h-5z"/>
           </svg>
         </div>
       </div>
 
-      <!-- TARJETA 4: Círculo Izquierda · Texto Derecha (Nube de Apuntes & Post-its) -->
-      <div class="feature-card left-circle card-theme-emerald">
-        <div class="card-body">
-          <div class="card-title">
-            Nube de apuntes por ramo
-            <span class="highlight">PDF y Guías</span>
-          </div>
-          <p class="card-desc">Sube y descarga resúmenes y guías organizados por asignatura. Todo tu material a mano y sin perder nada.</p>
-        </div>
-        <div class="card-circle" title="Nube de Apuntes">
-          <!-- Icono Nube / Archivo -->
-          <svg viewBox="0 0 24 24" fill="currentColor">
-            <path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM14 13v4h-4v-4H7l5-5 5 5h-3z"/>
-          </svg>
-        </div>
-      </div>
-
     </div>
 
-    <!-- Explicación del contraste con la versión anterior -->
-    <div class="compare-box">
-      <strong>¿Por qué esta propuesta es más llamativa?</strong><br>
-      • <strong>Antes:</strong> Listaba funciones obvias (ej: <em>"Horario: visualización de clases"</em> o <em>"Tareas: desglose"</em>).<br>
-      • <strong>Ahora:</strong> Se enfoca en el <strong>beneficio real</strong> (<em>"Saber cuánto necesitas para pasar"</em>, <em>"Empezar a estudiar sin estrés"</em>, <em>"Ver salas y días que faltan"</em> y <em>"Apuntes organizados"</em>).
+    <!-- Resumen explicativo -->
+    <div class="info-box">
+      <strong>Enfoque en lo más llamativo:</strong><br>
+      • <strong>Post-it interactivo:</strong> La función más visual y reconocible de la pantalla de inicio.<br>
+      • <strong>Recordatorios de estudio:</strong> Romper la inercia con 10 minutos y avisos de certámenes.<br>
+      • <strong>Nota necesaria:</strong> La pregunta del millón de todo estudiante (<em>"¿cuánto necesito para pasar?"</em>).<br>
+      • <strong>Horario con salas:</strong> La utilidad diaria indispensable para no perderse en la sede.
     </div>
   </div>
 </body>
