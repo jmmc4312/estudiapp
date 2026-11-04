@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bosquejo — Características EstudiApp</title>
+  <style>
+    /* ── Tokens de EstudiApp ── */
+    :root {
+      --primary: #7C3AED;
+      --primary-dark: #5B21B6;
+      --primary-dim: #EDE9FE;
+      --ink: #1F2433;
+      --bg: #F6F5FB;
+      --surface: #FFFFFF;
+      --border: #E8E7F1;
+      --muted: #4B5563;
+      
+      /* Colores temáticos por característica */
+      --amber-bg: #FEF3C7;
+      --amber-ink: #B45309;
+      --amber-accent: #F59E0B;
+
+      --purple-bg: #EDE9FE;
+      --purple-ink: #6D28D9;
+      --purple-accent: #7C3AED;
+
+      --blue-bg: #DBEAFE;
+      --blue-ink: #1D4ED8;
+      --blue-accent: #2563EB;
+
+      --emerald-bg: #D1FAE5;
+      --emerald-ink: #047857;
+      --emerald-accent: #059669;
+
+      --shadow-sm: 0 4px 12px rgba(27, 21, 48, 0.06);
+      --shadow-hover: 0 8px 20px rgba(124, 58, 237, 0.12);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 24px 16px 48px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .wrapper {
+      width: 100%;
+      max-width: 440px; /* Tamaño compacto acorde al teléfono */
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    /* ── Encabezado del bosquejo ── */
+    .header {
+      text-align: center;
+      padding-bottom: 8px;
+    }
+
+    .tag {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--primary);
+      background: var(--primary-dim);
+      padding: 4px 12px;
+      border-radius: 999px;
+      margin-bottom: 8px;
+    }
+
+    .header h2 {
+      font-size: 21px;
+      font-weight: 800;
+      color: var(--ink);
+      letter-spacing: -0.01em;
+      line-height: 1.25;
+    }
+
+    .header p {
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    /* ── Lista de tarjetas alternadas (Izquierda / Derecha) ── */
+    .features-list {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      margin-top: 6px;
+    }
+
+    /* 
+      Estructura de la tarjeta:
+      - Rectángulo con texto
+      - Círculo acoplado en el extremo con notch/silueta
+    */
+    .feature-card {
+      display: flex;
+      align-items: center;
+      width: 100%;
+      min-height: 86px;
+      position: relative;
+      transition: transform 0.18s ease, box-shadow 0.18s ease;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-2px);
+    }
+
+    /* 1 y 3: Texto a la izquierda, Círculo a la derecha */
+    .feature-card.right-circle {
+      flex-direction: row;
+    }
+
+    /* 2 y 4: Círculo a la izquierda, Texto a la derecha */
+    .feature-card.left-circle {
+      flex-direction: row-reverse;
+    }
+
+    /* Cuerpo rectangular */
+    .card-body {
+      flex: 1;
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: 16px;
+      padding: 12px 18px;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 3px;
+      min-height: 82px;
+      z-index: 1;
+    }
+
+    /* Conexión con el círculo */
+    .feature-card.right-circle .card-body {
+      padding-right: 32px;
+      margin-right: -24px; /* Solapamiento con el círculo */
+      border-top-right-radius: 26px;
+      border-bottom-right-radius: 26px;
+    }
+
+    .feature-card.left-circle .card-body {
+      padding-left: 32px;
+      margin-left: -24px; /* Solapamiento con el círculo */
+      border-top-left-radius: 26px;
+      border-bottom-left-radius: 26px;
+    }
+
+    .card-title {
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--ink);
+      line-height: 1.25;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .card-title .highlight {
+      font-size: 10px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      padding: 2px 7px;
+      border-radius: 6px;
+    }
+
+    .card-desc {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.4;
+    }
+
+    /* Círculo representativo */
+    .card-circle {
+      width: 66px;
+      height: 66px;
+      border-radius: 50%;
+      background: var(--surface);
+      border: 2px solid var(--border);
+      box-shadow: 0 4px 14px rgba(27, 21, 48, 0.1);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      z-index: 2; /* Por encima del borde solapado */
+      position: relative;
+    }
+
+    .card-circle svg {
+      width: 28px;
+      height: 28px;
+    }
+
+    /* Colores por tarjeta */
+    /* 1. Notas & Promedios (Ámbar) */
+    .card-theme-amber .card-circle {
+      background: var(--amber-bg);
+      border-color: var(--amber-accent);
+      color: var(--amber-ink);
+    }
+    .card-theme-amber .card-title .highlight {
+      background: var(--amber-bg);
+      color: var(--amber-ink);
+    }
+
+    /* 2. El Primer Paso / Antiprocrastinación (Púrpura) */
+    .card-theme-purple .card-circle {
+      background: var(--purple-bg);
+      border-color: var(--purple-accent);
+      color: var(--purple-ink);
+    }
+    .card-theme-purple .card-title .highlight {
+      background: var(--purple-bg);
+      color: var(--purple-ink);
+    }
+
+    /* 3. Horario & Salas (Azul) */
+    .card-theme-blue .card-circle {
+      background: var(--blue-bg);
+      border-color: var(--blue-accent);
+      color: var(--blue-ink);
+    }
+    .card-theme-blue .card-title .highlight {
+      background: var(--blue-bg);
+      color: var(--blue-ink);
+    }
+
+    /* 4. Nube de Apuntes (Esmeralda) */
+    .card-theme-emerald .card-circle {
+      background: var(--emerald-bg);
+      border-color: var(--emerald-accent);
+      color: var(--emerald-ink);
+    }
+    .card-theme-emerald .card-title .highlight {
+      background: var(--emerald-bg);
+      color: var(--emerald-ink);
+    }
+
+    /* ── Barra de comparación / selector ── */
+    .compare-box {
+      margin-top: 14px;
+      background: #FFFFFF;
+      border: 1px dashed var(--border);
+      border-radius: 14px;
+      padding: 14px;
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+
+    .compare-box strong {
+      color: var(--ink);
+    }
+
+    .compare-box code {
+      background: var(--bg);
+      padding: 1px 5px;
+      border-radius: 4px;
+      font-size: 11px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrapper">
+    <!-- Encabezado de la sección -->
+    <div class="header">
+      <span class="tag">Bosquejo Referencial</span>
+      <h2>Lo que hace única a EstudiApp</h2>
+      <p>Diseñada específicamente para el ritmo de la educación superior en Chile.</p>
+    </div>
+
+    <!-- Lista de tarjetas alternadas en base a tu bosquejo -->
+    <div class="features-list">
+
+      <!-- TARJETA 1: Texto Izquierda · Círculo Derecha (Notas y Meta de Aprobación) -->
+      <div class="feature-card right-circle card-theme-amber">
+        <div class="card-body">
+          <div class="card-title">
+            Notas y cuánto necesitas
+            <span class="highlight">Escala 1.0 - 7.0</span>
+          </div>
+          <p class="card-desc">Cálculo de promedios ponderados y predicción exacta de la nota que necesitas para aprobar o eximirte.</p>
+        </div>
+        <div class="card-circle" title="Notas y Ponderaciones">
+          <!-- Icono Trofeo / Nota -->
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path d="M19 5h-2V3H7v2H5c-1.1 0-2 .9-2 2v1c0 2.55 1.92 4.63 4.39 4.94A5.01 5.01 0 0011 15.9V19H7v2h10v-2h-4v-3.1a5.01 5.01 0 003.61-2.96C19.08 12.63 21 10.55 21 8V7c0-1.1-.9-2-2-2zM5 8V7h2v3.82C5.84 10.4 5 9.3 5 8zm14 0c0 1.3-.84 2.4-2 2.82V7h2v1z"/>
+          </svg>
+        </div>
+      </div>
+
+      <!-- TARJETA 2: Círculo Izquierda · Texto Derecha (Antiprocrastinación / El Primer Paso) -->
+      <div class="feature-card left-circle card-theme-purple">
+        <div class="card-body">
+          <div class="card-title">
+            "El Primer Paso": adiós al postergar
+            <span class="highlight">10 min</span>
+          </div>
+          <p class="card-desc">Pasitos diminutos para romper la inercia sin estrés. Un empujón amable cuando más cuesta sentarse a estudiar.</p>
+        </div>
+        <div class="card-circle" title="El Primer Paso">
+          <!-- Icono Destello / Comienzo -->
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 2l2.4 7.2h7.6l-6 4.8 2.3 7.2-6.3-4.5-6.3 4.5 2.3-7.2-6-4.8h7.6z"/>
+          </svg>
+        </div>
+      </div>
+
+      <!-- TARJETA 3: Texto Izquierda · Círculo Derecha (Horario con Salas y Calendario) -->
+      <div class="feature-card right-circle card-theme-blue">
+        <div class="card-body">
+          <div class="card-title">
+            Horario lectivo con salas
+            <span class="highlight">Semana y Mes</span>
+          </div>
+          <p class="card-desc">Tus clases con sala y profesor cruzadas con tus entregas de tareas y días restantes para cada certamen.</p>
+        </div>
+        <div class="card-circle" title="Horario y Salas">
+          <!-- Icono Calendario / Reloj -->
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2zm-7 5h5v5h-5z"/>
+          </svg>
+        </div>
+      </div>
+
+      <!-- TARJETA 4: Círculo Izquierda · Texto Derecha (Nube de Apuntes & Post-its) -->
+      <div class="feature-card left-circle card-theme-emerald">
+        <div class="card-body">
+          <div class="card-title">
+            Nube de apuntes por ramo
+            <span class="highlight">PDF y Guías</span>
+          </div>
+          <p class="card-desc">Sube y descarga resúmenes y guías organizados por asignatura. Todo tu material a mano y sin perder nada.</p>
+        </div>
+        <div class="card-circle" title="Nube de Apuntes">
+          <!-- Icono Nube / Archivo -->
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM14 13v4h-4v-4H7l5-5 5 5h-3z"/>
+          </svg>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Explicación del contraste con la versión anterior -->
+    <div class="compare-box">
+      <strong>¿Por qué esta propuesta es más llamativa?</strong><br>
+      • <strong>Antes:</strong> Listaba funciones obvias (ej: <em>"Horario: visualización de clases"</em> o <em>"Tareas: desglose"</em>).<br>
+      • <strong>Ahora:</strong> Se enfoca en el <strong>beneficio real</strong> (<em>"Saber cuánto necesitas para pasar"</em>, <em>"Empezar a estudiar sin estrés"</em>, <em>"Ver salas y días que faltan"</em> y <em>"Apuntes organizados"</em>).
+    </div>
+  </div>
+</body>
+
+</html>
