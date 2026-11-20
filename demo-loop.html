@@ -154,7 +154,7 @@
     .chip ion-icon { font-size: 13px; color: var(--ps); }
 
     /* ═══════════════════════════════════
-       PHONE MOCKUP
+       PHONE MOCKUP (Android / Marco limpio sin recorte)
     ═══════════════════════════════════ */
     .phone-wrap {
       flex-shrink: 0; position: relative;
@@ -162,42 +162,28 @@
     }
     .phone {
       position: relative;
-      width: clamp(200px, 20vw, 272px);
-      aspect-ratio: 9/19.5;
-      border-radius: clamp(28px, 3vw, 44px);
-      background: #18132A;
+      width: clamp(210px, 19.5vw, 265px);
+      aspect-ratio: 819 / 1600;
+      border-radius: 20px;
+      background: #151024;
       box-shadow:
-        0 0 0 8px #18132A,
-        0 0 0 9.5px rgba(255,255,255,.08),
-        0 32px 80px rgba(0,0,0,.60),
-        0 8px 36px rgba(124,58,237,.28);
+        0 0 0 4.5px #1E1830,
+        0 0 0 6px rgba(255,255,255,.08),
+        0 24px 60px rgba(0,0,0,.65),
+        0 8px 30px rgba(124,58,237,.22);
       overflow: hidden;
-    }
-    /* Isla dinámica */
-    .phone::before {
-      content: '';
-      position: absolute; top: 10px; left: 50%; transform: translateX(-50%);
-      width: 84px; height: 24px;
-      background: #0D0A1A; border-radius: 999px; z-index: 20;
-    }
-    /* Reflejo sutil */
-    .phone::after {
-      content: '';
-      position: absolute; inset: 0; z-index: 20; pointer-events: none;
-      border-radius: inherit;
-      background: linear-gradient(145deg,
-        rgba(255,255,255,.07) 0%,
-        transparent 30%,
-        transparent 70%,
-        rgba(0,0,0,.08) 100%);
+      display: flex;
     }
     .phone-screen {
       width: 100%; height: 100%; overflow: hidden;
+      border-radius: 16px;
       display: flex; align-items: stretch;
+      background: var(--abg);
     }
     .phone-screen img {
       width: 100%; height: 100%;
-      object-fit: cover; object-position: top center;
+      object-fit: fill;
+      display: block;
     }
 
     /* ─── Placeholder (antes de tener capturas) ─── */
@@ -226,35 +212,107 @@
       100% { opacity: .95; transform: translate(-50%,-50%) scale(1.07); }
     }
 
-    /* ─── Badges flotantes ─── */
+    /* ─── Badges flotantes (100% externos sin tapar la pantalla) ─── */
     .badge {
       position: absolute; z-index: 30;
       display: flex; align-items: center; gap: 8px;
-      background: rgba(255,255,255,.97);
-      border: 1px solid rgba(124,58,237,.15);
-      border-radius: 12px; padding: 8px 12px;
-      box-shadow: 0 8px 24px rgba(0,0,0,.18);
+      background: rgba(255,255,255,.98);
+      border: 1px solid rgba(124,58,237,.18);
+      border-radius: 12px; padding: 8px 13px;
+      box-shadow: 0 8px 24px rgba(0,0,0,.22), 0 2px 8px rgba(124,58,237,.12);
       backdrop-filter: blur(8px);
-      opacity: 0; transform: scale(.84);
+      opacity: 0; transform: scale(.88);
       white-space: nowrap;
+      pointer-events: none;
     }
     .badge ion-icon  { font-size: 16px; color: var(--p); flex-shrink: 0; }
     .badge-info      { display: flex; flex-direction: column; }
     .badge-title     { font-size: 11px; font-weight: 700; color: var(--atxt); line-height: 1.3; }
     .badge-sub       { font-size: 9.5px; font-weight: 600; color: var(--p); }
-    /* posiciones */
-    .b-tr { top: -12px; right: -34px; }
-    .b-bl { bottom: 18px; left: -40px; }
-    .b-mr { top: 36%; right: -42px; }
+
+    /* Posiciones completamente externas */
+    .b-top {
+      bottom: calc(100% + 14px);
+      right: 0;
+    }
+    .b-bottom {
+      top: calc(100% + 14px);
+      left: 0;
+    }
+
+    /* ─── Duo de teléfonos en Slide 3 (Estudio) ─── */
+    .two-phones-wrap {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      position: relative;
+      flex-shrink: 0;
+    }
+    .two-phones-wrap .phone {
+      width: clamp(160px, 14.5vw, 205px);
+      aspect-ratio: 819 / 1600;
+      border-radius: 18px;
+      box-shadow:
+        0 0 0 4px #1E1830,
+        0 0 0 5.5px rgba(255,255,255,.08),
+        0 24px 60px rgba(0,0,0,.55),
+        0 6px 26px rgba(124,58,237,.22);
+    }
+    .two-phones-wrap .phone .phone-screen {
+      border-radius: 14px;
+    }
+    .two-phones-wrap .phone-1 {
+      transform: translateY(-12px);
+    }
+    .two-phones-wrap .phone-2 {
+      transform: translateY(12px);
+    }
+    .two-phones-wrap .phone-halo {
+      width: 160%;
+      height: 125%;
+    }
 
     /* ═══════════════════════════════════
-       ESCENA CIERRE — 1 teléfono centrado
+       ESCENA CIERRE — Logo de la app
     ═══════════════════════════════════ */
+    .close-scene {
+      gap: 22px;
+    }
+    .close-logo-wrap {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transform: translateY(20px);
+      will-change: transform, opacity;
+      margin-bottom: 6px;
+    }
+    .close-logo-halo {
+      position: absolute;
+      width: 220px;
+      height: 220px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(124,58,237,.35) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+      animation: halo 3.5s ease-in-out infinite alternate;
+    }
+    .close-logo-img {
+      width: clamp(110px, 12vw, 150px);
+      height: auto;
+      max-height: 150px;
+      object-fit: contain;
+      position: relative;
+      z-index: 1;
+      filter: drop-shadow(0 14px 32px rgba(124,58,237,.35));
+      border-radius: 28px;
+    }
     .close-wrap {
-      display: flex; flex-direction: column; align-items: center; gap: 28px;
+      display: flex; flex-direction: column; align-items: center; gap: 20px;
     }
     .close-logo {
-      font-size: clamp(40px, 5.5vw, 68px);
+      font-size: clamp(38px, 5vw, 64px);
       font-weight: 900; letter-spacing: -2.5px; line-height: 1;
       background: linear-gradient(130deg, #fff 0%, var(--ps) 55%, var(--p) 100%);
       -webkit-background-clip: text; -webkit-text-fill-color: transparent;
@@ -268,17 +326,15 @@
     }
     .close-pill {
       display: inline-flex; align-items: center; gap: 8px;
-      background: linear-gradient(130deg, var(--p) 0%, var(--pd) 100%);
-      border: 1px solid rgba(167,139,250,.22);
-      border-radius: 999px; padding: 11px 28px;
-      font-size: 13px; font-weight: 700; color: #fff;
-      box-shadow: 0 10px 32px rgba(124,58,237,.38);
+      background: rgba(124, 58, 237, 0.12);
+      border: 1px solid rgba(167, 139, 250, 0.28);
+      border-radius: 999px; padding: 10px 24px;
+      font-size: 13px; font-weight: 600; color: #D8B4FE;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
       opacity: 0; transform: translateY(14px);
+      letter-spacing: 0.2px;
     }
-    .close-pill ion-icon { font-size: 15px; }
-
-    /* ─── El phone del cierre es exactamente igual pero sin wrappers extra ─── */
-    #s5-phone { margin-bottom: 0; }
+    .close-pill ion-icon { font-size: 15px; color: var(--ps); }
 
     /* ═══════════════════════════════════
        HUD
@@ -304,6 +360,10 @@
     }
 
     /* Responsive */
+    @media (max-width: 900px) {
+      .two-phones-wrap { gap: 10px; }
+      .two-phones-wrap .phone { width: clamp(130px, 18vw, 160px); }
+    }
     @media (max-width: 780px) {
       .row   { flex-direction: column !important; padding: 20px; gap: 20px; }
       .txt   { max-width: 100%; text-align: center; }
@@ -312,6 +372,7 @@
       .desc  { margin: 0 auto 20px; }
       .bg-num { display: none; }
       .badge  { display: none; }
+      .two-phones-wrap .phone { width: clamp(135px, 40vw, 165px); }
     }
   </style>
 </head>
@@ -352,32 +413,23 @@
 
       <div class="phone-wrap" id="s1-ph">
         <div class="phone-halo"></div>
-        <div class="badge b-tr" id="s1-b1">
+        <div class="badge b-top" id="s1-b1">
           <ion-icon name="checkmark-circle-outline"></ion-icon>
           <div class="badge-info">
-            <span class="badge-title">3 tareas para hoy</span>
-            <span class="badge-sub">Cálculo · Programación · Química</span>
+            <span class="badge-title">4 tareas activas</span>
+            <span class="badge-sub">Logística · Proyectos</span>
           </div>
         </div>
-        <div class="badge b-bl" id="s1-b2">
+        <div class="badge b-bottom" id="s1-b2">
           <ion-icon name="calendar-outline"></ion-icon>
           <div class="badge-info">
-            <span class="badge-title">Evaluación mañana</span>
-            <span class="badge-sub">Cálculo II · 10:00 h</span>
+            <span class="badge-title">Horario de hoy</span>
+            <span class="badge-sub">Supervisión en Procesos · Sala 201</span>
           </div>
         </div>
         <div class="phone">
           <div class="phone-screen">
-            <!--
-              CAPTURA 1 — PANTALLA INICIO
-              Reemplaza este bloque <div class="ph">…</div> por:
-              <img src="cap1-inicio.png" alt="Inicio">
-            -->
-            <div class="ph">
-              <ion-icon name="home-outline"></ion-icon>
-              <div class="ph-name">Captura 1 · Inicio</div>
-              <div class="ph-hint">Mi Día con saludo, actividades y tareas pendientes</div>
-            </div>
+            <img src="cap1-inicio.png" alt="Inicio">
           </div>
         </div>
       </div>
@@ -412,32 +464,23 @@
 
       <div class="phone-wrap" id="s2-ph">
         <div class="phone-halo"></div>
-        <div class="badge b-mr" id="s2-b1">
+        <div class="badge b-top" id="s2-b1">
           <ion-icon name="time-outline"></ion-icon>
           <div class="badge-info">
-            <span class="badge-title">Clase en 30 min</span>
-            <span class="badge-sub">Programación · Sala B-204</span>
+            <span class="badge-title">Clase hoy</span>
+            <span class="badge-sub">Taller de Proyectos · 10:15 h</span>
           </div>
         </div>
-        <div class="badge b-bl" id="s2-b2">
+        <div class="badge b-bottom" id="s2-b2">
           <ion-icon name="alert-circle-outline"></ion-icon>
           <div class="badge-info">
-            <span class="badge-title">Prueba en 2 días</span>
-            <span class="badge-sub">Cálculo II · Control 2</span>
+            <span class="badge-title">Entrega en 3 días</span>
+            <span class="badge-sub">Supervisión en Procesos Logísticos</span>
           </div>
         </div>
         <div class="phone">
           <div class="phone-screen">
-            <!--
-              CAPTURA 2 — PANTALLA CALENDARIO
-              Reemplaza este bloque <div class="ph">…</div> por:
-              <img src="cap2-calendario.png" alt="Calendario">
-            -->
-            <div class="ph">
-              <ion-icon name="calendar-outline"></ion-icon>
-              <div class="ph-name">Captura 2 · Calendario</div>
-              <div class="ph-hint">Selector semanal con bloques de clase y agenda de evaluaciones</div>
-            </div>
+            <img src="cap2-calendario.png" alt="Calendario">
           </div>
         </div>
       </div>
@@ -470,36 +513,37 @@
         </div>
       </div>
 
-      <div class="phone-wrap" id="s3-ph">
+      <div class="phone-wrap two-phones-wrap" id="s3-ph">
         <div class="phone-halo"></div>
-        <div class="badge b-tr" id="s3-b1">
-          <ion-icon name="trending-up-outline"></ion-icon>
-          <div class="badge-info">
-            <span class="badge-title">Promedio general 5.6</span>
-            <span class="badge-sub">4 ramos · Semestre actual</span>
-          </div>
-        </div>
-        <div class="badge b-bl" id="s3-b2">
-          <ion-icon name="trophy-outline"></ion-icon>
-          <div class="badge-info">
-            <span class="badge-title">Última nota: 6.2</span>
-            <span class="badge-sub">Programación · Control 1</span>
-          </div>
-        </div>
-        <div class="phone">
-          <div class="phone-screen">
-            <!--
-              CAPTURA 3 — PANTALLA ESTUDIO (tab Académico)
-              Reemplaza este bloque <div class="ph">…</div> por:
-              <img src="cap3-estudio.png" alt="Estudio">
-            -->
-            <div class="ph">
-              <ion-icon name="book-outline"></ion-icon>
-              <div class="ph-name">Captura 3 · Estudio</div>
-              <div class="ph-hint">Tab Académico: grid de ramos con colores y bento de evaluaciones</div>
+
+        <!-- Teléfono 1: Vista Asignaturas / Malla de Ramos -->
+        <div class="phone phone-1">
+          <div class="badge b-top" id="s3-b1" style="bottom: calc(100% + 14px); left: 0; right: auto;">
+            <ion-icon name="grid-outline"></ion-icon>
+            <div class="badge-info">
+              <span class="badge-title">4 asignaturas</span>
+              <span class="badge-sub">Grid y colores</span>
             </div>
           </div>
+          <div class="phone-screen">
+            <img src="cap3-estudio-1-academico.png" alt="Académico">
+          </div>
         </div>
+
+        <!-- Teléfono 2: Detalle de Ramo o Bento de Evaluaciones -->
+        <div class="phone phone-2">
+          <div class="badge b-bottom" id="s3-b2" style="top: calc(100% + 14px); right: 0; left: auto;">
+            <ion-icon name="trending-up-outline"></ion-icon>
+            <div class="badge-info">
+              <span class="badge-title">Promedio general 5.6</span>
+              <span class="badge-sub">Última nota: 6.2</span>
+            </div>
+          </div>
+          <div class="phone-screen">
+            <img src="cap3-estudio-2-actividades.png" alt="Actividades">
+          </div>
+        </div>
+
       </div>
 
     </div>
@@ -532,32 +576,23 @@
 
       <div class="phone-wrap" id="s4-ph">
         <div class="phone-halo"></div>
-        <div class="badge b-tr" id="s4-b1">
+        <div class="badge b-top" id="s4-b1">
           <ion-icon name="people-outline"></ion-icon>
           <div class="badge-info">
-            <span class="badge-title">Grupo Cálculo II</span>
-            <span class="badge-sub">24 miembros · 8 archivos</span>
+            <span class="badge-title">Grupo de Estudio</span>
+            <span class="badge-sub">Logística y Comercio · 6 archivos</span>
           </div>
         </div>
-        <div class="badge b-bl" id="s4-b2">
+        <div class="badge b-bottom" id="s4-b2">
           <ion-icon name="document-attach-outline"></ion-icon>
           <div class="badge-info">
-            <span class="badge-title">Nueva colección compartida</span>
-            <span class="badge-sub">Apuntes de Química</span>
+            <span class="badge-title">Lectura reciente</span>
+            <span class="badge-sub">Manual de Incoterms 2020</span>
           </div>
         </div>
         <div class="phone">
           <div class="phone-screen">
-            <!--
-              CAPTURA 4 — PANTALLA BIBLIOTECA
-              Reemplaza este bloque <div class="ph">…</div> por:
-              <img src="cap4-biblioteca.png" alt="Biblioteca">
-            -->
-            <div class="ph">
-              <ion-icon name="library-outline"></ion-icon>
-              <div class="ph-name">Captura 4 · Biblioteca</div>
-              <div class="ph-hint">Colecciones, apuntes o detalle de grupo con miembros y archivos</div>
-            </div>
+            <img src="cap4-biblioteca.png" alt="Biblioteca">
           </div>
         </div>
       </div>
@@ -566,26 +601,15 @@
   </section>
 
   <!-- ════════════════════════════════
-       S5 — CIERRE (1 teléfono centrado)
+       S5 — CIERRE (Logo suave y marca)
   ════════════════════════════════ -->
   <section class="scene" id="s5">
-    <div class="row col">
+    <div class="row col close-scene">
 
-      <!-- 1 solo teléfono, mismo tamaño que las otras escenas -->
-      <div class="phone-wrap" id="s5-ph">
-        <div class="phone-halo"></div>
-        <div class="phone">
-          <div class="phone-screen">
-            <!--
-              CIERRE — pon aquí la captura que más represente la app
-              Reemplaza por: <img src="cap1-inicio.png" alt="EstudiApp">
-            -->
-            <div class="ph">
-              <ion-icon name="home-outline"></ion-icon>
-              <div class="ph-name">Cap 1 · Inicio</div>
-            </div>
-          </div>
-        </div>
+      <!-- Logo de la app con animación suave -->
+      <div class="close-logo-wrap" id="s5-logo-wrap">
+        <div class="close-logo-halo"></div>
+        <img src="logo-Estudiapp.png" alt="EstudiApp" class="close-logo-img" id="s5-logo-img">
       </div>
 
       <!-- Marca -->
@@ -617,7 +641,7 @@
 // ───────────────────────────────
 //  CONFIG
 // ───────────────────────────────
-const SCENE_MS = 8000;
+const SCENE_MS = 12000;  // 12 segundos por slide (+4s para lectura pausada)
 const WIPE_HALF = 300;   // ms de cada mitad del wipe
 
 // ───────────────────────────────
@@ -760,10 +784,10 @@ const scenes = [
     dot: document.getElementById('d5'),
     play(){
       const b = DELAY;
-      floatUp(document.getElementById('s5-ph'), {d:b});
-      up(document.getElementById('s5-logo'), {d:b+480, ms:650});
-      up(document.getElementById('s5-tag'),  {d:b+640, ms:580});
-      up(document.getElementById('s5-pill'), {d:b+780, ms:580});
+      up(document.getElementById('s5-logo-wrap'), {d:b, ms:700});
+      up(document.getElementById('s5-logo'), {d:b+220, ms:600});
+      up(document.getElementById('s5-tag'),  {d:b+380, ms:550});
+      up(document.getElementById('s5-pill'), {d:b+540, ms:550});
     }
   }
 ];
@@ -781,11 +805,11 @@ function reset(i){
   });
   s.el.querySelectorAll('.phone-wrap').forEach(e=>{ e.style.opacity='0'; });
   s.el.querySelectorAll('.badge').forEach(e=>{
-    e.style.opacity='0'; e.style.transform='scale(.84)';
+    e.style.opacity='0'; e.style.transform='scale(.88)';
   });
-  ['s5-logo','s5-tag','s5-pill'].forEach(id=>{
+  ['s5-logo-wrap','s5-logo','s5-tag','s5-pill'].forEach(id=>{
     const e=document.getElementById(id);
-    if(e){ e.style.opacity='0'; e.style.transform='translateY(14px)'; }
+    if(e){ e.style.opacity='0'; e.style.transform='translateY(16px)'; }
   });
 }
 
