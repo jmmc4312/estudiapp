@@ -162,7 +162,8 @@
     }
     .phone {
       position: relative;
-      width: clamp(260px, 24vw, 335px);
+      width: clamp(250px, 22vw, 310px);
+      max-height: clamp(480px, 62vh, 600px);
       aspect-ratio: 819 / 1600;
       border-radius: 24px;
       background: #151024;
@@ -171,7 +172,7 @@
         0 0 0 6.5px rgba(255,255,255,.08),
         0 28px 70px rgba(0,0,0,.68),
         0 10px 36px rgba(124,58,237,.24);
-      overflow: hidden;
+      overflow: visible;
       display: flex;
     }
     .phone-screen {
@@ -230,14 +231,16 @@
     .badge-title     { font-size: 11.5px; font-weight: 700; color: var(--atxt); line-height: 1.3; }
     .badge-sub       { font-size: 10px; font-weight: 600; color: var(--p); }
 
-    /* Posiciones completamente externas */
+    /* Posiciones centralizadas respecto al espacio del teléfono (evita tocar bordes superior/inferior) */
     .b-top {
-      bottom: calc(100% + 14px);
-      right: 0;
+      top: 16px;
+      bottom: auto;
+      right: -24px;
     }
     .b-bottom {
-      top: calc(100% + 14px);
-      left: 0;
+      bottom: 20px;
+      top: auto;
+      left: -24px;
     }
 
     /* ─── Duo de teléfonos en Slide 3 (Estudio) — Agrandado ─── */
@@ -249,7 +252,8 @@
       flex-shrink: 0;
     }
     .two-phones-wrap .phone {
-      width: clamp(225px, 18.5vw, 285px);
+      width: clamp(215px, 17vw, 265px);
+      max-height: clamp(440px, 56vh, 530px);
       aspect-ratio: 819 / 1600;
       border-radius: 22px;
       box-shadow:
@@ -257,6 +261,7 @@
         0 0 0 6px rgba(255,255,255,.08),
         0 26px 65px rgba(0,0,0,.60),
         0 8px 30px rgba(124,58,237,.24);
+      overflow: visible;
     }
     .two-phones-wrap .phone .phone-screen {
       border-radius: 17px;
@@ -515,7 +520,7 @@
 
         <!-- Teléfono 1: Vista Asignaturas / Malla de Ramos -->
         <div class="phone phone-1">
-          <div class="badge b-top" id="s3-b1" style="bottom: calc(100% + 14px); left: 0; right: auto;">
+          <div class="badge b-top" id="s3-b1" style="top: 16px; left: -22px; bottom: auto; right: auto;">
             <ion-icon name="grid-outline"></ion-icon>
             <div class="badge-info">
               <span class="badge-title">4 asignaturas</span>
@@ -529,7 +534,7 @@
 
         <!-- Teléfono 2: Detalle de Ramo o Bento de Evaluaciones -->
         <div class="phone phone-2">
-          <div class="badge b-bottom" id="s3-b2" style="top: calc(100% + 14px); right: 0; left: auto;">
+          <div class="badge b-bottom" id="s3-b2" style="bottom: 20px; right: -22px; top: auto; left: auto;">
             <ion-icon name="trending-up-outline"></ion-icon>
             <div class="badge-info">
               <span class="badge-title">Promedio general 5.6</span>
@@ -637,7 +642,7 @@
 // ───────────────────────────────
 //  CONFIG
 // ───────────────────────────────
-const SCENE_MS = 12000;  // 12 segundos por slide (+4s para lectura pausada)
+const SCENE_MS = 11000;  // 11 segundos por slide (reducido -1s a petición del usuario)
 const WIPE_HALF = 300;   // ms de cada mitad del wipe
 
 // ───────────────────────────────
