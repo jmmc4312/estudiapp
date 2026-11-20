@@ -810,60 +810,141 @@ function reset(i){
 }
 
 // ───────────────────────────────
-//  LOOP
+//  LOOP & PAUSA
 // ───────────────────────────────
-let cur=0, loopId=null, tickId=null, elapsed=0;
+let cur = 0;
+let loopTimeout = null;
+let tickId = null;
+let elapsed = 0;
+let remaining = SCENE_MS;
+let slideStartTime = 0;
+let isPaused = false;
+let isTransitioning = false;
+
 const wipe = document.getElementById('wipe');
 const tmr  = document.getElementById('tmr');
 
-function fmt(ms){ const s=Math.floor(ms/1e3),m=Math.floor(s/60); return `${String(m).padStart(2,'0')}:${String(s%60).padStart(2,'0')}`; }
-
-function startTick(){
-  clearInterval(tickId); elapsed=0; tmr.textContent=fmt(0);
-  tickId=setInterval(()=>{ elapsed+=100; tmr.textContent=fmt(elapsed); },100);
+function fmt(ms){
+  const s = Math.floor(ms / 1e3);
+  const m = Math.floor(s / 60);
+  return `${String(m).padStart(2,'0')}:${String(s%60).padStart(2,'0')}`;
 }
 
-function goTo(next){
+function clearSlideTimers(){
+  if (loopTimeout) { clearTimeout(loopTimeout); loopTimeout = null; }
+  if (tickId) { clearInterval(tickId); tickId = null; }
+}
+
+function startSlideTimer(ms){
+  clearSlideTimers();
+  if (isPaused) return;
+
+  remaining = ms;
+  slideStartTime = Date.now();
+
+  tickId = setInterval(()=>{
+    elapsed += 100;
+    tmr.textContent = fmt(elapsed);
+  }, 100);
+
+  loopTimeout = setTimeout(()=>{
+    next();
+  }, ms);
+}
+
+function pause(){
+  if (isPaused) return;
+  isPaused = true;
+  if (!isTransitioning) {
+    const passed = Date.now() - slideStartTime;
+    remaining = Math.max(0, remaining - passed);
+  }
+  clearSlideTimers();
+}
+
+function resume(){
+  if (!isPaused) return;
+  isPaused = false;
+  if (!isTransitioning) {
+    startSlideTimer(remaining > 0 ? remaining : SCENE_MS);
+  }
+}
+
+function togglePause(){
+  if (isPaused) {
+    resume();
+  } else {
+    pause();
+  }
+}
+
+function goTo(nextIdx){
+  if (isTransitioning) return;
+  isTransitioning = true;
+  clearSlideTimers();
+
   scenes[cur].el.classList.remove('active');
   scenes[cur].dot.classList.remove('on');
 
-  wipe.style.transition=`transform ${WIPE_HALF}ms cubic-bezier(.76,0,.24,1)`;
-  wipe.style.transformOrigin='left';
-  wipe.style.transform='scaleX(1)';
+  wipe.style.transition = `transform ${WIPE_HALF}ms cubic-bezier(.76,0,.24,1)`;
+  wipe.style.transformOrigin = 'left';
+  wipe.style.transform = 'scaleX(1)';
 
   setTimeout(()=>{
-    cur=next;
+    cur = nextIdx;
     reset(cur);
     scenes[cur].el.classList.add('active');
     scenes[cur].dot.classList.add('on');
 
-    wipe.style.transformOrigin='right';
-    wipe.style.transform='scaleX(0)';
+    wipe.style.transformOrigin = 'right';
+    wipe.style.transform = 'scaleX(0)';
 
-    setTimeout(()=>{ scenes[cur].play(); startTick(); }, WIPE_HALF+40);
+    setTimeout(()=>{
+      isTransitioning = false;
+      scenes[cur].play();
+      elapsed = 0;
+      tmr.textContent = fmt(0);
+      remaining = SCENE_MS;
+      if (!isPaused) {
+        startSlideTimer(SCENE_MS);
+      }
+    }, WIPE_HALF + 40);
   }, WIPE_HALF);
 }
 
-function next(){ goTo((cur+1)%scenes.length); }
-function prev(){ goTo((cur-1+scenes.length)%scenes.length); }
+function next(){ goTo((cur + 1) % scenes.length); }
+function prev(){ goTo((cur - 1 + scenes.length) % scenes.length); }
 
 function init(){
   reset(0);
   scenes[0].el.classList.add('active');
   scenes[0].dot.classList.add('on');
-  setTimeout(()=>{ scenes[0].play(); startTick(); }, 80);
-  loopId = setInterval(next, SCENE_MS);
+  elapsed = 0;
+  tmr.textContent = fmt(0);
+  remaining = SCENE_MS;
+  setTimeout(()=>{
+    scenes[0].play();
+    if (!isPaused) {
+      startSlideTimer(SCENE_MS);
+    }
+  }, 80);
 }
 
 init();
 
-document.getElementById('stage').addEventListener('click',()=>{
-  clearInterval(loopId); next(); loopId=setInterval(next,SCENE_MS);
+document.getElementById('stage').addEventListener('click', ()=>{
+  next();
 });
 
-document.addEventListener('keydown', e=>{
-  if(e.key==='ArrowRight'||e.key===' '){ clearInterval(loopId); next(); loopId=setInterval(next,SCENE_MS); }
-  else if(e.key==='ArrowLeft')         { clearInterval(loopId); prev(); loopId=setInterval(next,SCENE_MS); }
+document.addEventListener('keydown', e => {
+  if (e.code === 'Space' || e.key === ' ' || e.key === 'Spacebar') {
+    e.preventDefault();
+    togglePause();
+  } else if (e.key === 'ArrowRight') {
+    next();
+  } else if (e.key === 'ArrowLeft') {
+    prev();
+  }
 });
 </script>
 </body>
