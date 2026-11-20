@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EstudiApp — Selector y Comparador de 4 Prototipos de Landing Page</title>
+  <link rel="icon" type="image/png" href="logo.png">
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #0F172A;
+      color: #F8FAFC;
+      line-height: 1.5;
+      padding: 32px 20px 60px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    /* ── Header ── */
+    .header {
+      text-align: center;
+      max-width: 800px;
+      margin: 0 auto 36px;
+    }
+    .badge-hub {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #A78BFA;
+      background: rgba(167, 139, 250, 0.15);
+      border: 1px solid rgba(167, 139, 250, 0.3);
+      padding: 5px 14px;
+      border-radius: 999px;
+      margin-bottom: 12px;
+    }
+    .header h1 {
+      font-size: 38px;
+      font-weight: 900;
+      letter-spacing: -0.025em;
+      color: #FFFFFF;
+    }
+    .header p {
+      font-size: 16px;
+      color: #94A3B8;
+      margin-top: 10px;
+      line-height: 1.55;
+    }
+
+    /* ── Grid de las 4 Tarjetas de Prototipos ── */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+      margin-bottom: 32px;
+    }
+
+    .proto-card {
+      background: #1E293B;
+      border: 2px solid #334155;
+      border-radius: 18px;
+      padding: 22px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 16px;
+      transition: all 0.2s ease;
+      cursor: pointer;
+      position: relative;
+    }
+    .proto-card:hover {
+      transform: translateY(-3px);
+      border-color: #8B5CF6;
+      box-shadow: 0 12px 30px rgba(139, 92, 246, 0.2);
+    }
+    .proto-card.active {
+      border-color: #8B5CF6;
+      background: #1A1F36;
+      box-shadow: 0 0 0 1px #8B5CF6;
+    }
+
+    .proto-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+    .proto-num {
+      font-size: 11px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 3px 8px;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.1);
+      color: #E2E8F0;
+    }
+    .proto-icon {
+      font-size: 26px;
+    }
+
+    .proto-title {
+      font-size: 18px;
+      font-weight: 850;
+      color: #FFFFFF;
+      line-height: 1.25;
+    }
+    .proto-style {
+      font-size: 11.5px;
+      color: #A78BFA;
+      font-weight: 700;
+      margin-top: 2px;
+    }
+    .proto-desc {
+      font-size: 12.5px;
+      color: #94A3B8;
+      line-height: 1.45;
+      margin-top: 8px;
+    }
+
+    .proto-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: auto;
+    }
+    .btn-view {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      background: #7C3AED;
+      color: #FFFFFF;
+      font-size: 13px;
+      font-weight: 750;
+      padding: 9px 14px;
+      border-radius: 10px;
+      text-decoration: none;
+      transition: background 0.15s ease;
+      border: none;
+      cursor: pointer;
+    }
+    .btn-view:hover {
+      background: #6D28D9;
+    }
+    .btn-fullscreen {
+      font-size: 11px;
+      color: #CBD5E1;
+      text-align: center;
+      text-decoration: none;
+      padding: 4px;
+    }
+    .btn-fullscreen:hover {
+      text-decoration: underline;
+      color: #FFFFFF;
+    }
+
+    /* ── Visor Embebido ── */
+    .viewer-container {
+      background: #1E293B;
+      border: 1px solid #334155;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+    }
+    .viewer-header {
+      background: #0F172A;
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid #334155;
+    }
+    .viewer-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13.5px;
+      font-weight: 700;
+      color: #E2E8F0;
+    }
+    .live-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #10B981;
+      box-shadow: 0 0 8px #10B981;
+    }
+    .viewer-url {
+      font-family: monospace;
+      font-size: 12px;
+      color: #94A3B8;
+      background: #1E293B;
+      padding: 5px 12px;
+      border-radius: 6px;
+      border: 1px solid #334155;
+    }
+    .viewer-device-toggle {
+      display: flex;
+      gap: 8px;
+    }
+    .device-btn {
+      background: #1E293B;
+      border: 1px solid #334155;
+      color: #94A3B8;
+      padding: 5px 10px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .device-btn.active {
+      background: #7C3AED;
+      color: #FFFFFF;
+      border-color: #7C3AED;
+    }
+
+    .iframe-wrapper {
+      width: 100%;
+      height: 750px;
+      background: #F8FAFC;
+      display: flex;
+      justify-content: center;
+      transition: all 0.3s ease;
+    }
+    .iframe-wrapper iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      transition: width 0.3s ease;
+    }
+    .iframe-wrapper.mobile-mode iframe {
+      width: 440px;
+      border-left: 2px solid #334155;
+      border-right: 2px solid #334155;
+      box-shadow: 0 0 40px rgba(0,0,0,0.3);
+    }
+
+    @media (max-width: 1000px) {
+      .cards-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+    @media (max-width: 600px) {
+      .cards-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+    <div class="header">
+      <span class="badge-hub">Local Prototype Hub · Solo Entorno Local</span>
+      <h1>4 Prototipos de Landing Page para EstudiApp</h1>
+      <p>
+        Diseñados con datos reales de la app (CFT Lota Arauco, Técnico en Logística, escala 1.0 - 7.0, Claude IA, horario con salas físicas y ficha técnica completa v1.0.0). Haz clic en cualquiera para visualizarlo abajo o abrirlo a pantalla completa.
+      </p>
+    </div>
+
+    <!-- Selector de 4 Prototipos -->
+    <div class="cards-grid">
+      <!-- 1 -->
+      <div class="proto-card active" onclick="loadProto('prototipo-1-saas-moderno.html', this, 'Prototipo 1: Modern Clean SaaS')">
+        <div class="proto-top">
+          <span class="proto-num">Prototipo 1</span>
+          <span class="proto-icon">✨</span>
+        </div>
+        <div>
+          <h3 class="proto-title">Modern Clean SaaS</h3>
+          <div class="proto-style">Inspiración: Stripe / Linear / Notion</div>
+          <p class="proto-desc">
+            Composición a 2 columnas con mockup de iPhone 16 Pro, bloques de beneficios alternados, acordeón FAQ y barra fija de conversión en móvil.
+          </p>
+        </div>
+        <div class="proto-actions">
+          <button class="btn-view">Ver en Previsualizador</button>
+          <a href="prototipo-1-saas-moderno.html" target="_blank" class="btn-fullscreen">Abrir en pestaña nueva ↗</a>
+        </div>
+      </div>
+
+      <!-- 2 -->
+      <div class="proto-card" onclick="loadProto('prototipo-2-bento-editorial.html', this, 'Prototipo 2: Bento Grid Editorial')">
+        <div class="proto-top">
+          <span class="proto-num">Prototipo 2</span>
+          <span class="proto-icon">🏛️</span>
+        </div>
+        <div>
+          <h3 class="proto-title">Bento Grid Editorial</h3>
+          <div class="proto-style">Inspiración: Apple / Vercel Bento</div>
+          <p class="proto-desc">
+            Enfoque académico premium con canvas cálido, grilla Bento de 12 columnas, tabla comparativa "Antes vs Con EstudiApp" y ficha de privacidad.
+          </p>
+        </div>
+        <div class="proto-actions">
+          <button class="btn-view">Ver en Previsualizador</button>
+          <a href="prototipo-2-bento-editorial.html" target="_blank" class="btn-fullscreen">Abrir en pestaña nueva ↗</a>
+        </div>
+      </div>
+
+      <!-- 3 -->
+      <div class="proto-card" onclick="loadProto('prototipo-3-dark-tech.html', this, 'Prototipo 3: Dark Mode Cyber-Clean')">
+        <div class="proto-top">
+          <span class="proto-num">Prototipo 3</span>
+          <span class="proto-icon">⚡</span>
+        </div>
+        <div>
+          <h3 class="proto-title">Dark Mode Cyber-Clean</h3>
+          <div class="proto-style">Inspiración: Raycast / Supabase Dark</div>
+          <p class="proto-desc">
+            Estética oscura profunda con destellos violetas y cian, arquitectura de seguridad en terminal, teléfono en dark mode y especificaciones de paquete.
+          </p>
+        </div>
+        <div class="proto-actions">
+          <button class="btn-view">Ver en Previsualizador</button>
+          <a href="prototipo-3-dark-tech.html" target="_blank" class="btn-fullscreen">Abrir en pestaña nueva ↗</a>
+        </div>
+      </div>
+
+      <!-- 4 -->
+      <div class="proto-card" onclick="loadProto('prototipo-4-interactivo-tabs.html', this, 'Prototipo 4: Showcase Interactivo de Pantallas')">
+        <div class="proto-top">
+          <span class="proto-num">Prototipo 4</span>
+          <span class="proto-icon">📱</span>
+        </div>
+        <div>
+          <h3 class="proto-title">Showcase Interactivo</h3>
+          <div class="proto-style">Inspiración: Arc Browser / Craft / Duolingo</div>
+          <p class="proto-desc">
+            Hero interactivo con pestañas: el usuario hace clic y la pantalla del teléfono cambia en vivo (Post-it, IA, Horario y Notas), más timeline diario.
+          </p>
+        </div>
+        <div class="proto-actions">
+          <button class="btn-view">Ver en Previsualizador</button>
+          <a href="prototipo-4-interactivo-tabs.html" target="_blank" class="btn-fullscreen">Abrir en pestaña nueva ↗</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Visor en Vivo Embebido con Switch Desktop / Móvil -->
+    <div class="viewer-container">
+      <div class="viewer-header">
+        <div class="viewer-title">
+          <span class="live-dot"></span>
+          <span id="active-proto-name">Prototipo 1: Modern Clean SaaS</span>
+        </div>
+        <div class="viewer-url" id="active-proto-url">prototipo-1-saas-moderno.html</div>
+        <div class="viewer-device-toggle">
+          <button class="device-btn active" onclick="setDevice('desktop', this)">🖥️ Escritorio</button>
+          <button class="device-btn" onclick="setDevice('mobile', this)">📱 Móvil (440px)</button>
+        </div>
+      </div>
+      <div class="iframe-wrapper" id="iframe-box">
+        <iframe id="preview-iframe" src="prototipo-1-saas-moderno.html"></iframe>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function loadProto(url, cardEl, title) {
+      document.getElementById('preview-iframe').src = url;
+      document.getElementById('active-proto-name').innerText = title;
+      document.getElementById('active-proto-url').innerText = url;
+
+      document.querySelectorAll('.proto-card').forEach(c => c.classList.remove('active'));
+      cardEl.classList.add('active');
+    }
+
+    function setDevice(type, btn) {
+      const box = document.getElementById('iframe-box');
+      document.querySelectorAll('.device-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      if (type === 'mobile') {
+        box.classList.add('mobile-mode');
+      } else {
+        box.classList.remove('mobile-mode');
+      }
+    }
+  </script>
+
+</body>
+
+</html>

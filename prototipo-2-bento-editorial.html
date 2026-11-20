@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EstudiApp — Prototipo 2: Bento Grid Editorial</title>
+  <meta name="description" content="El sistema operativo académico para educación superior en Chile.">
+  <link rel="icon" type="image/png" href="logo.png">
+  <style>
+    /* ── Reset & Variables (Bento Editorial Style) ── */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg: #F9F8F6;
+      --surface: #FFFFFF;
+      --ink: #18181B;
+      --ink-muted: #52525B;
+      --ink-subtle: #A1A1AA;
+      --border: #E4E4E7;
+      --border-warm: #E7E3DC;
+      --primary: #5B21B6;
+      --primary-light: #7C3AED;
+      --primary-dim: #F3E8FF;
+      --accent-gold: #D97706;
+      --accent-gold-bg: #FEF3C7;
+      --accent-emerald: #059669;
+      --accent-emerald-bg: #D1FAE5;
+      --radius-sm: 8px;
+      --radius-md: 16px;
+      --radius-lg: 24px;
+      --radius-xl: 32px;
+      --shadow-bento: 0 4px 20px rgba(24, 24, 27, 0.05);
+      --shadow-hover: 0 12px 36px rgba(91, 33, 182, 0.12);
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .proto-badge-bar {
+      background: #27272A;
+      color: #F4F4F5;
+      padding: 8px 16px;
+      font-size: 12px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .proto-badge-bar a {
+      color: #C084FC;
+      text-decoration: none;
+      font-weight: 700;
+      margin-left: 12px;
+    }
+
+    .container {
+      max-width: 1140px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* ── Header ── */
+    .header-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 24px 0;
+    }
+    .brand-wrap {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: var(--ink);
+    }
+    .brand-wrap img {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+    }
+    .brand-text h1 {
+      font-size: 20px;
+      font-weight: 850;
+      letter-spacing: -0.02em;
+    }
+    .brand-text span {
+      font-size: 11px;
+      color: var(--ink-muted);
+      display: block;
+      margin-top: -3px;
+    }
+
+    /* ── Hero Editorial ── */
+    .hero-editorial {
+      text-align: center;
+      padding: 48px 0 64px;
+      max-width: 840px;
+      margin: 0 auto;
+    }
+    .editorial-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 11.5px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      background: var(--surface);
+      border: 1px solid var(--border-warm);
+      padding: 6px 16px;
+      border-radius: 999px;
+      color: var(--primary);
+      margin-bottom: 20px;
+    }
+    .hero-editorial h2 {
+      font-size: 52px;
+      font-weight: 900;
+      line-height: 1.08;
+      letter-spacing: -0.035em;
+      color: var(--ink);
+    }
+    .hero-editorial h2 em {
+      font-style: italic;
+      font-family: Georgia, 'Times New Roman', serif;
+      color: var(--primary-light);
+      font-weight: 400;
+    }
+    .hero-editorial p {
+      font-size: 19px;
+      color: var(--ink-muted);
+      line-height: 1.5;
+      margin: 20px auto 32px;
+      max-width: 620px;
+    }
+    .hero-btns-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+    .btn {
+      padding: 13px 26px;
+      border-radius: 999px;
+      font-size: 15px;
+      font-weight: 750;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+    .btn-solid {
+      background: var(--ink);
+      color: #FFFFFF;
+    }
+    .btn-solid:hover {
+      background: var(--primary);
+      transform: translateY(-2px);
+    }
+    .btn-outline {
+      background: var(--surface);
+      color: var(--ink);
+      border: 1px solid var(--border-warm);
+    }
+    .btn-outline:hover {
+      background: #FFFFFF;
+      border-color: var(--ink);
+    }
+
+    /* ── Live Stats Strip ── */
+    .stats-strip {
+      display: flex;
+      justify-content: center;
+      gap: 36px;
+      margin-top: 36px;
+      padding-top: 24px;
+      border-top: 1px dashed var(--border-warm);
+      flex-wrap: wrap;
+    }
+    .stat-node {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--ink-muted);
+    }
+    .stat-node strong {
+      color: var(--ink);
+      font-weight: 800;
+    }
+
+    /* ── BENTO GRID SYSTEM ── */
+    .bento-section {
+      padding: 40px 0 80px;
+    }
+    .bento-grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 20px;
+    }
+    .bento-card {
+      background: var(--surface);
+      border: 1px solid var(--border-warm);
+      border-radius: var(--radius-lg);
+      padding: 30px;
+      box-shadow: var(--shadow-bento);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .bento-card:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-hover);
+    }
+    .bento-tag {
+      font-size: 10px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 4px 10px;
+      border-radius: 6px;
+      align-self: flex-start;
+      margin-bottom: 12px;
+    }
+    .bento-card h3 {
+      font-size: 22px;
+      font-weight: 850;
+      letter-spacing: -0.015em;
+      line-height: 1.25;
+      margin-bottom: 8px;
+    }
+    .bento-card p {
+      font-size: 14px;
+      color: var(--ink-muted);
+      line-height: 1.5;
+    }
+
+    /* Tile 1: IA Assistant (Grande - 8 cols) */
+    .tile-ia {
+      grid-column: span 8;
+      background: linear-gradient(135deg, #FFFFFF 0%, #FAF8FF 100%);
+    }
+    .ia-simulation-box {
+      margin-top: 24px;
+      background: #FFFFFF;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 18px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.03);
+    }
+    .ia-chat-head {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 10px;
+    }
+    .ia-response-text {
+      font-size: 13.5px;
+      color: var(--ink);
+      line-height: 1.5;
+    }
+    .formula-tag {
+      display: block;
+      margin-top: 8px;
+      background: #F3E8FF;
+      color: #5B21B6;
+      font-family: monospace;
+      font-size: 12.5px;
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-weight: 700;
+    }
+
+    /* Tile 2: Pizarrón Post-It (4 cols) */
+    .tile-postit {
+      grid-column: span 4;
+      background: #FEFCE8;
+      border-color: #FDE047;
+    }
+    .postit-real-card {
+      background: #FEF08A;
+      border: 1px solid #EAB308;
+      border-radius: 12px;
+      padding: 16px;
+      margin-top: 20px;
+      box-shadow: 0 4px 12px rgba(161, 98, 7, 0.15);
+      transform: rotate(-1.5deg);
+    }
+    .postit-real-card h5 {
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      color: #854D0E;
+    }
+    .postit-real-card p {
+      font-size: 12.5px;
+      font-weight: 600;
+      color: #713F12;
+      margin-top: 4px;
+    }
+
+    /* Tile 3: Horario con Salas (4 cols) */
+    .tile-sched {
+      grid-column: span 4;
+    }
+    .mini-sched-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 20px;
+    }
+    .mini-sched-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 12px;
+      background: var(--bg);
+      border-radius: 10px;
+      font-size: 12.5px;
+      font-weight: 700;
+    }
+    .room-badge {
+      background: var(--accent-emerald-bg);
+      color: var(--accent-emerald);
+      padding: 2px 7px;
+      border-radius: 5px;
+      font-size: 11px;
+    }
+
+    /* Tile 4: Termómetro de Notas y Ponderaciones (8 cols) */
+    .tile-grades {
+      grid-column: span 8;
+    }
+    .grades-bento-visual {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 24px;
+    }
+    .grade-box-col {
+      background: var(--bg);
+      padding: 16px;
+      border-radius: 14px;
+    }
+    .grade-box-col h6 {
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--ink-muted);
+      text-transform: uppercase;
+    }
+    .big-grade-num {
+      font-size: 32px;
+      font-weight: 900;
+      color: var(--primary);
+      margin: 4px 0;
+    }
+    .passing-bar-wrap {
+      width: 100%;
+      height: 8px;
+      background: #E4E4E7;
+      border-radius: 99px;
+      overflow: hidden;
+      margin-top: 8px;
+    }
+    .passing-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #10B981, #059669);
+      border-radius: 99px;
+    }
+
+    /* ── Tabla Comparativa Antes vs Después ── */
+    .compare-section {
+      padding: 64px 0;
+    }
+    .compare-box {
+      background: var(--surface);
+      border: 1px solid var(--border-warm);
+      border-radius: var(--radius-xl);
+      padding: 40px;
+      box-shadow: var(--shadow-bento);
+    }
+    .compare-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 24px;
+    }
+    .compare-table th {
+      text-align: left;
+      padding: 14px 18px;
+      font-size: 14px;
+      font-weight: 800;
+      border-bottom: 2px solid var(--border);
+    }
+    .compare-table td {
+      padding: 16px 18px;
+      font-size: 13.5px;
+      border-bottom: 1px solid var(--border);
+    }
+    .compare-table tr:last-child td {
+      border-bottom: none;
+    }
+    .col-before {
+      color: #71717A;
+    }
+    .col-after {
+      color: var(--primary);
+      font-weight: 700;
+    }
+
+    /* ── Descarga APK & Verificación de Confianza ── */
+    .download-editorial {
+      background: #18181B;
+      color: #FFFFFF;
+      border-radius: var(--radius-xl);
+      padding: 56px 48px;
+      margin: 64px 0;
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 48px;
+      align-items: center;
+    }
+    .download-editorial h3 {
+      font-size: 36px;
+      font-weight: 900;
+      letter-spacing: -0.02em;
+    }
+    .download-editorial p {
+      font-size: 16px;
+      color: #A1A1AA;
+      margin-top: 12px;
+      line-height: 1.5;
+    }
+    .qr-placeholder-box {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: var(--radius-md);
+      padding: 24px;
+      text-align: center;
+    }
+    .qr-placeholder-box h5 {
+      font-size: 14px;
+      color: #E4E4E7;
+      margin-bottom: 10px;
+    }
+
+    /* ── FAQ ── */
+    .faq-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-top: 36px;
+    }
+    .faq-card {
+      background: var(--surface);
+      border: 1px solid var(--border-warm);
+      border-radius: var(--radius-md);
+      padding: 24px;
+    }
+    .faq-card h4 {
+      font-size: 16px;
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+    .faq-card p {
+      font-size: 13.5px;
+      color: var(--ink-muted);
+      line-height: 1.5;
+    }
+
+    @media (max-width: 900px) {
+      .hero-editorial h2 {
+        font-size: 36px;
+      }
+      .bento-grid {
+        grid-template-columns: 1fr;
+      }
+      .tile-ia, .tile-postit, .tile-sched, .tile-grades {
+        grid-column: span 1;
+      }
+      .grades-bento-visual {
+        grid-template-columns: 1fr;
+      }
+      .download-editorial {
+        grid-template-columns: 1fr;
+        padding: 36px 24px;
+      }
+      .faq-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="proto-badge-bar">
+    <div>
+      <span>🏛️ <strong>Prototipo 2: Bento Grid Editorial</strong> (Estilo Apple / Linear / Vercel Bento)</span>
+    </div>
+    <div>
+      <a href="prototipos.html">← Cambiar de Prototipo (Ver los 4)</a>
+    </div>
+  </div>
+
+  <div class="container">
+    <!-- Header -->
+    <header class="header-nav">
+      <a href="#" class="brand-wrap">
+        <img src="logo.png" alt="EstudiApp" onerror="this.style.display='none'">
+        <div class="brand-text">
+          <h1>EstudiApp</h1>
+          <span>Sistema Académico Integral</span>
+        </div>
+      </a>
+      <div>
+        <a href="./demo/" class="btn btn-solid">Probar Demo en Vivo</a>
+      </div>
+    </header>
+
+    <!-- Hero Editorial -->
+    <section class="hero-editorial">
+      <div class="editorial-badge">
+        <span>✨ Educación Superior · Versión 1.0.0 Oficial</span>
+      </div>
+      <h2>
+        El sistema operativo que tu <em>carrera profesional</em> necesita.
+      </h2>
+      <p>
+        Diseñado para estudiantes que no pueden perder tiempo. Notas ponderadas en escala 1.0 a 7.0, horario con salas físicas, pizarrón de notas rápidas y tutor IA.
+      </p>
+
+      <div class="hero-btns-row">
+        <a href="./demo/" class="btn btn-solid">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M8 5v14l11-7z" /></svg>
+          Explorar Demo Interactiva
+        </a>
+        <a href="#descarga" class="btn btn-outline">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Instalar APK en Android
+        </a>
+      </div>
+
+      <!-- Live Stats -->
+      <div class="stats-strip">
+        <div class="stat-node">
+          <span>🎓</span>
+          <span>Caso de éxito: <strong>CFT Lota Arauco</strong></span>
+        </div>
+        <div class="stat-node">
+          <span>📊</span>
+          <span>Escala chilena: <strong>1.0 a 7.0 automática</strong></span>
+        </div>
+        <div class="stat-node">
+          <span>🛡️</span>
+          <span>Privacidad: <strong>Postgres RLS blindado</strong></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Bento Grid Section -->
+    <section class="bento-section">
+      <div class="bento-grid">
+        
+        <!-- Tile 1: Asistente IA (8 cols) -->
+        <div class="bento-card tile-ia">
+          <div>
+            <span class="bento-tag" style="background: #F3E8FF; color: #5B21B6;">IA Tutor Edge Function</span>
+            <h3>Asistente IA conectado a tus materias</h3>
+            <p>Impulsado por Claude en funciones seguras. Resuelve dudas académicas al vuelo, explica formulaciones paso a paso y te ayuda a preparar certámenes sin rodeos.</p>
+          </div>
+          <div class="ia-simulation-box">
+            <div class="ia-chat-head">
+              <span>🤖 Consulta de Logística en Vivo</span>
+            </div>
+            <p class="ia-response-text">
+              Para determinar el Lote Económico de Compra (EOQ) optimizando los costos de almacenamiento y pedido, aplicamos:
+            </p>
+            <span class="formula-tag">EOQ = √[(2 × Demanda Anual × Costo Pedido) / Costo Almacenar]</span>
+          </div>
+        </div>
+
+        <!-- Tile 2: Pizarrón Post-It (4 cols) -->
+        <div class="bento-card tile-postit">
+          <div>
+            <span class="bento-tag" style="background: #FEF08A; color: #854D0E;">Pizarrón Visual</span>
+            <h3>Notas Post-it</h3>
+            <p>Captura rápida de ideas, recordatorios de sala y notas de urgencia clasificadas por prioridad.</p>
+          </div>
+          <div class="postit-real-card">
+            <h5>📌 Prioridad Alta</h5>
+            <p>Llevar calzado de seguridad y cuaderno para salida a terreno en centro logístico.</p>
+          </div>
+        </div>
+
+        <!-- Tile 3: Horario con Salas (4 cols) -->
+        <div class="bento-card tile-sched">
+          <div>
+            <span class="bento-tag" style="background: var(--accent-emerald-bg); color: var(--accent-emerald);">Orientación Física</span>
+            <h3>Horario con Salas</h3>
+            <p>Ubicación exacta para cada bloque. Se acabaron las confusiones en el pasillo.</p>
+          </div>
+          <div class="mini-sched-list">
+            <div class="mini-sched-row">
+              <span>Adm. Suministros</span>
+              <span class="room-badge">Sala 204</span>
+            </div>
+            <div class="mini-sched-row">
+              <span>Tecnología Aplicada</span>
+              <span class="room-badge">Lab 2</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tile 4: Termómetro de Notas y Ponderaciones (8 cols) -->
+        <div class="bento-card tile-grades">
+          <div>
+            <span class="bento-tag" style="background: #DBEAFE; color: #1E40AF;">Matemática Académica</span>
+            <h3>Ponderación y Meta de Aprobación</h3>
+            <p>Cálculo riguroso de promedios según los porcentajes oficiales del programa. Te avisa exactamente qué nota necesitas para salvar el ramo o eximirte.</p>
+          </div>
+          <div class="grades-bento-visual">
+            <div class="grade-box-col">
+              <h6>Promedio Ponderado</h6>
+              <div class="big-grade-num">5.8</div>
+              <div style="font-size: 12px; color: #059669; font-weight: 700;">Aprobando con tranquilidad</div>
+              <div class="passing-bar-wrap">
+                <div class="passing-bar-fill" style="width: 82%;"></div>
+              </div>
+            </div>
+            <div class="grade-box-col">
+              <h6>Meta Examen / Certamen 2</h6>
+              <div class="big-grade-num" style="color: #D97706;">3.5</div>
+              <div style="font-size: 12px; color: var(--ink-muted);">Nota mínima requerida en la prueba final</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Comparación Antes vs Con EstudiApp -->
+    <section class="compare-section">
+      <div class="compare-box">
+        <h3 style="font-size: 24px; font-weight: 850;">¿Por qué no basta con un cuaderno o un grupo de WhatsApp?</h3>
+        <p style="font-size: 14px; color: var(--ink-muted); margin-top: 4px;">Comparación directa de la gestión académica tradicional frente al sistema EstudiApp.</p>
+
+        <table class="compare-table">
+          <thead>
+            <tr>
+              <th>Aspecto</th>
+              <th>Método Tradicional</th>
+              <th>Con EstudiApp</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Cálculo de Notas</strong></td>
+              <td class="col-before">Sumar porcentajes en la calculadora del teléfono con riesgo de error</td>
+              <td class="col-after">Simulador exacto: te dice al decimal qué nota necesitas para pasar</td>
+            </tr>
+            <tr>
+              <td><strong>Horarios y Salas</strong></td>
+              <td class="col-before">Captura de pantalla borrosa en la galería del teléfono</td>
+              <td class="col-after">Grilla interactiva con salas, tiempo restante y bloques libres</td>
+            </tr>
+            <tr>
+              <td><strong>Dudas Previas a la Prueba</strong></td>
+              <td class="col-before">Esperar a que el profe responda el correo o buscar en foros</td>
+              <td class="col-after">Asistente IA 24/7 que te explica fórmulas y conceptos paso a paso</td>
+            </tr>
+            <tr>
+              <td><strong>Procrastinación</strong></td>
+              <td class="col-before">Dejar todo para la noche anterior a la entrega</td>
+              <td class="col-after">Módulo "El Primer Paso": bloques guiados de 10 minutos para romper inercia</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Descarga Editorial & Verificación -->
+    <section class="download-editorial" id="descarga">
+      <div>
+        <span style="font-size: 11px; font-weight: 800; text-transform: uppercase; color: #C084FC;">Instalación Directa Verificada</span>
+        <h3 style="margin-top: 8px;">Listo para acompañarte en cada semestre</h3>
+        <p>
+          Paquete APK oficial firmado para Android 7.0 o superior (101 MB). Sin costo de descarga ni licencias mensuales.
+        </p>
+
+        <div style="margin-top: 24px; display: flex; gap: 14px; flex-wrap: wrap;">
+          <a href="https://github.com/jmmc4312/estudiapp/releases/latest/download/EstudiApp.apk" class="btn" style="background: #FFFFFF; color: #18181B;">
+            Descargar APK Oficial (v1.0.0)
+          </a>
+          <a href="./demo/" class="btn" style="background: transparent; color: #FFFFFF; border: 1px solid rgba(255,255,255,0.25);">
+            Abrir Demo Web sin instalar
+          </a>
+        </div>
+      </div>
+
+      <div class="qr-placeholder-box">
+        <h5>Especificaciones de Seguridad</h5>
+        <div style="font-size: 13px; color: #A1A1AA; line-height: 1.6; text-align: left;">
+          <div>• <strong>Paquete:</strong> com.estudiapp.app</div>
+          <div>• <strong>Permisos:</strong> Notificaciones locales y Red</div>
+          <div>• <strong>Base de datos:</strong> Supabase Postgres + RLS</div>
+          <div>• <strong>Rastreo comercial:</strong> 0% (Sin telemetría de venta)</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ Editorial -->
+    <section style="padding: 40px 0 80px;">
+      <h3 style="font-size: 26px; font-weight: 850; text-align: center;">Preguntas Frecuentes</h3>
+      <div class="faq-grid">
+        <div class="faq-card">
+          <h4>¿Tengo que pagar alguna suscripción?</h4>
+          <p>No. EstudiApp es un proyecto libre de suscripciones o pagos obligatorios para la comunidad estudiantil.</p>
+        </div>
+        <div class="faq-card">
+          <h4>¿Qué pasa con mis datos si cambio de teléfono?</h4>
+          <p>Tus notas, asignaturas y tareas se sincronizan con tu cuenta protegida en Supabase, por lo que las recuperas iniciando sesión en tu nuevo teléfono o navegador.</p>
+        </div>
+        <div class="faq-card">
+          <h4>¿Es compatible con cualquier carrera técnica o universitaria?</h4>
+          <p>Sí. Puedes configurar cualquier malla curricular, nombres de ramos, profesores, ponderaciones y bloques de horario.</p>
+        </div>
+        <div class="faq-card">
+          <h4>¿Por qué el APK pesa 101 MB?</h4>
+          <p>Incluye el entorno de ejecución nativo optimizado con Expo/React Native para funcionar con fluidez a 60 FPS en Android.</p>
+        </div>
+      </div>
+    </section>
+
+    <footer style="text-align: center; padding: 40px 0; border-top: 1px solid var(--border-warm); font-size: 13px; color: var(--ink-muted);">
+      EstudiApp · Rediseño Prototipo 2 (Bento Grid Editorial) · Noviembre 2026
+    </footer>
+  </div>
+
+</body>
+
+</html>
