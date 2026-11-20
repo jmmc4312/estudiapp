@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EstudiApp — Demo</title>
+  <!-- Ionicons: los mismos íconos que usa la app -->
+  <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+  <!-- Fuente -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --p:    #7C3AED;
+      --pd:   #5B21B6;
+      --ps:   #A78BFA;
+      --bg:   #0D0A1A;
+      --abg:  #F4F2FA;
+      --atxt: #1F2433;
+    }
+
+    html, body {
+      width: 100%; height: 100%; overflow: hidden;
+      font-family: 'Inter', system-ui, sans-serif;
+      background: var(--bg);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ─── Stage ─── */
+    #stage {
+      position: fixed; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden;
+    }
+
+    /* ─── Fondo: radial suave ─── */
+    .bg-radial {
+      position: absolute; inset: 0; z-index: 0; pointer-events: none;
+      background:
+        radial-gradient(ellipse 72% 55% at 20% 30%, rgba(124,58,237,.14) 0%, transparent 60%),
+        radial-gradient(ellipse 55% 45% at 80% 75%, rgba(91,33,182,.10) 0%, transparent 60%);
+      animation: bgShift 14s ease-in-out infinite alternate;
+    }
+    @keyframes bgShift {
+      0%   { opacity: .8; }
+      100% { opacity: 1; }
+    }
+
+    /* ─── Grid muy sutil ─── */
+    .bg-grid {
+      position: absolute; inset: 0; z-index: 0; pointer-events: none;
+      background-image:
+        linear-gradient(rgba(124,58,237,.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(124,58,237,.03) 1px, transparent 1px);
+      background-size: 52px 52px;
+    }
+
+    /* ─── Línea superior de marca ─── */
+    .brand-line {
+      position: absolute; top: 0; left: 0; right: 0; height: 2px; z-index: 100;
+      background: linear-gradient(90deg,
+        transparent 0%, var(--p) 25%, var(--ps) 55%, var(--p) 80%, transparent 100%);
+      opacity: .6;
+    }
+
+    /* ─── Partículas muy suaves ─── */
+    .particles { position: absolute; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+    .particle  {
+      position: absolute; border-radius: 50%;
+      background: rgba(167,139,250,.3);
+      animation: pRise linear infinite;
+    }
+    @keyframes pRise {
+      0%   { transform: translateY(108vh); opacity: 0; }
+      6%   { opacity: 1; }
+      94%  { opacity: 1; }
+      100% { transform: translateY(-8vh);  opacity: 0; }
+    }
+
+    /* ─── Wipe de transición ─── */
+    #wipe {
+      position: fixed; inset: 0; z-index: 900; pointer-events: none;
+      background: linear-gradient(115deg, var(--pd) 0%, var(--p) 100%);
+      transform: scaleX(0); transform-origin: left;
+    }
+
+    /* ═══════════════════════════════════
+       ESCENAS
+    ═══════════════════════════════════ */
+    .scene {
+      position: absolute; inset: 0; z-index: 10;
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none;
+    }
+    .scene.active { opacity: 1; pointer-events: all; }
+
+    /* Layout: row normal, row invertido, columna centrada */
+    .row     { display: flex; align-items: center; gap: clamp(32px,5vw,80px); width: 100%; max-width: 1160px; padding: 0 clamp(28px,5vw,64px); }
+    .row-rev { flex-direction: row-reverse; }
+    .col     { flex-direction: column; align-items: center; gap: 24px; text-align: center; }
+
+    /* Número de fondo decorativo */
+    .bg-num {
+      position: absolute; bottom: 8%; right: 4%;
+      font-size: clamp(70px,10vw,140px); font-weight: 900; letter-spacing: -5px;
+      color: rgba(124,58,237,.04); user-select: none; pointer-events: none; line-height: 1;
+    }
+
+    /* ─── Bloque de texto ─── */
+    .txt { flex: 1; max-width: 480px; }
+
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 10px;
+      font-size: 10px; font-weight: 700; letter-spacing: 3px;
+      text-transform: uppercase; color: var(--ps); margin-bottom: 18px;
+      opacity: 0; transform: translateY(16px);
+    }
+    .eyebrow-line {
+      display: block; width: 18px; height: 1.5px;
+      background: var(--ps); border-radius: 2px; flex-shrink: 0;
+    }
+
+    /* ─── Título: fade-up de bloque, no por palabra ─── */
+    .title {
+      font-size: clamp(30px, 4vw, 52px);
+      font-weight: 900; line-height: 1.08; letter-spacing: -1.4px;
+      color: #fff; margin-bottom: 16px;
+      opacity: 0; transform: translateY(28px);
+    }
+    .title .acc { color: var(--ps); }
+
+    .desc {
+      font-size: clamp(13px, 1.4vw, 16px);
+      font-weight: 400; line-height: 1.72;
+      color: rgba(255,255,255,.52);
+      max-width: 400px; margin-bottom: 26px;
+      opacity: 0; transform: translateY(16px);
+    }
+
+    /* ─── Chips ─── */
+    .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+    .chip  {
+      display: inline-flex; align-items: center; gap: 7px;
+      background: rgba(124,58,237,.12);
+      border: 1px solid rgba(167,139,250,.25);
+      border-radius: 999px; padding: 6px 14px;
+      font-size: 12px; font-weight: 600; color: #C4B5FD;
+      opacity: 0; transform: translateY(10px);
+    }
+    .chip ion-icon { font-size: 13px; color: var(--ps); }
+
+    /* ═══════════════════════════════════
+       PHONE MOCKUP
+    ═══════════════════════════════════ */
+    .phone-wrap {
+      flex-shrink: 0; position: relative;
+      opacity: 0; will-change: transform, opacity;
+    }
+    .phone {
+      position: relative;
+      width: clamp(200px, 20vw, 272px);
+      aspect-ratio: 9/19.5;
+      border-radius: clamp(28px, 3vw, 44px);
+      background: #18132A;
+      box-shadow:
+        0 0 0 8px #18132A,
+        0 0 0 9.5px rgba(255,255,255,.08),
+        0 32px 80px rgba(0,0,0,.60),
+        0 8px 36px rgba(124,58,237,.28);
+      overflow: hidden;
+    }
+    /* Isla dinámica */
+    .phone::before {
+      content: '';
+      position: absolute; top: 10px; left: 50%; transform: translateX(-50%);
+      width: 84px; height: 24px;
+      background: #0D0A1A; border-radius: 999px; z-index: 20;
+    }
+    /* Reflejo sutil */
+    .phone::after {
+      content: '';
+      position: absolute; inset: 0; z-index: 20; pointer-events: none;
+      border-radius: inherit;
+      background: linear-gradient(145deg,
+        rgba(255,255,255,.07) 0%,
+        transparent 30%,
+        transparent 70%,
+        rgba(0,0,0,.08) 100%);
+    }
+    .phone-screen {
+      width: 100%; height: 100%; overflow: hidden;
+      display: flex; align-items: stretch;
+    }
+    .phone-screen img {
+      width: 100%; height: 100%;
+      object-fit: cover; object-position: top center;
+    }
+
+    /* ─── Placeholder (antes de tener capturas) ─── */
+    .ph {
+      flex: 1;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 8px;
+      background: var(--abg); padding: 20px 14px; text-align: center;
+    }
+    .ph ion-icon { font-size: 24px; color: var(--p); opacity: .35; }
+    .ph-name { font-size: 9px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--p); opacity: .4; }
+    .ph-hint { font-size: 7.5px; color: var(--atxt); opacity: .35; line-height: 1.5; max-width: 130px; }
+
+    /* ─── Halo morado detrás del teléfono ─── */
+    .phone-halo {
+      position: absolute; z-index: -1;
+      width: 160%; height: 120%;
+      border-radius: 50%;
+      background: radial-gradient(ellipse, rgba(124,58,237,.22) 0%, transparent 68%);
+      top: 50%; left: 50%; transform: translate(-50%,-50%);
+      animation: halo 4s ease-in-out infinite alternate;
+      pointer-events: none;
+    }
+    @keyframes halo {
+      0%   { opacity: .6; transform: translate(-50%,-50%) scale(1);    }
+      100% { opacity: .95; transform: translate(-50%,-50%) scale(1.07); }
+    }
+
+    /* ─── Badges flotantes ─── */
+    .badge {
+      position: absolute; z-index: 30;
+      display: flex; align-items: center; gap: 8px;
+      background: rgba(255,255,255,.97);
+      border: 1px solid rgba(124,58,237,.15);
+      border-radius: 12px; padding: 8px 12px;
+      box-shadow: 0 8px 24px rgba(0,0,0,.18);
+      backdrop-filter: blur(8px);
+      opacity: 0; transform: scale(.84);
+      white-space: nowrap;
+    }
+    .badge ion-icon  { font-size: 16px; color: var(--p); flex-shrink: 0; }
+    .badge-info      { display: flex; flex-direction: column; }
+    .badge-title     { font-size: 11px; font-weight: 700; color: var(--atxt); line-height: 1.3; }
+    .badge-sub       { font-size: 9.5px; font-weight: 600; color: var(--p); }
+    /* posiciones */
+    .b-tr { top: -12px; right: -34px; }
+    .b-bl { bottom: 18px; left: -40px; }
+    .b-mr { top: 36%; right: -42px; }
+
+    /* ═══════════════════════════════════
+       ESCENA CIERRE — 1 teléfono centrado
+    ═══════════════════════════════════ */
+    .close-wrap {
+      display: flex; flex-direction: column; align-items: center; gap: 28px;
+    }
+    .close-logo {
+      font-size: clamp(40px, 5.5vw, 68px);
+      font-weight: 900; letter-spacing: -2.5px; line-height: 1;
+      background: linear-gradient(130deg, #fff 0%, var(--ps) 55%, var(--p) 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+      opacity: 0; transform: translateY(20px);
+    }
+    .close-tag {
+      font-size: clamp(13px, 1.4vw, 17px); font-weight: 400;
+      color: rgba(255,255,255,.42); letter-spacing: .3px;
+      opacity: 0; transform: translateY(14px);
+    }
+    .close-pill {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: linear-gradient(130deg, var(--p) 0%, var(--pd) 100%);
+      border: 1px solid rgba(167,139,250,.22);
+      border-radius: 999px; padding: 11px 28px;
+      font-size: 13px; font-weight: 700; color: #fff;
+      box-shadow: 0 10px 32px rgba(124,58,237,.38);
+      opacity: 0; transform: translateY(14px);
+    }
+    .close-pill ion-icon { font-size: 15px; }
+
+    /* ─── El phone del cierre es exactamente igual pero sin wrappers extra ─── */
+    #s5-phone { margin-bottom: 0; }
+
+    /* ═══════════════════════════════════
+       HUD
+    ═══════════════════════════════════ */
+    .hud {
+      position: fixed; bottom: 24px; left: 0; right: 0; z-index: 800;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+    }
+    .dot {
+      width: 5px; height: 5px; border-radius: 999px;
+      background: rgba(255,255,255,.18); transition: all .4s ease;
+    }
+    .dot.on { width: 24px; background: var(--p); box-shadow: 0 0 10px rgba(124,58,237,.55); }
+
+    .hud-timer {
+      position: fixed; bottom: 24px; right: 40px; z-index: 800;
+      font-size: 9px; font-weight: 600; letter-spacing: 2px;
+      color: rgba(255,255,255,.18); font-variant-numeric: tabular-nums;
+    }
+    .hud-hint {
+      position: fixed; bottom: 24px; left: 40px; z-index: 800;
+      font-size: 9px; color: rgba(255,255,255,.15); letter-spacing: 1px;
+    }
+
+    /* Responsive */
+    @media (max-width: 780px) {
+      .row   { flex-direction: column !important; padding: 20px; gap: 20px; }
+      .txt   { max-width: 100%; text-align: center; }
+      .chips { justify-content: center; }
+      .eyebrow { justify-content: center; }
+      .desc  { margin: 0 auto 20px; }
+      .bg-num { display: none; }
+      .badge  { display: none; }
+    }
+  </style>
+</head>
+<body>
+<div id="stage">
+
+  <!-- Fondo -->
+  <div class="bg-radial"></div>
+  <div class="bg-grid"></div>
+  <div class="brand-line"></div>
+  <div class="particles" id="pts"></div>
+  <div id="wipe"></div>
+
+  <!-- ════════════════════════════════
+       S1 — INICIO
+       cap: cap1-inicio.png
+  ════════════════════════════════ -->
+  <section class="scene active" id="s1">
+    <div class="bg-num">01</div>
+    <div class="row">
+
+      <div class="txt">
+        <div class="eyebrow" id="s1-ey">
+          <span class="eyebrow-line"></span>Inicio
+        </div>
+        <h1 class="title" id="s1-tt">
+          Organiza tu<br>vida <span class="acc">académica.</span>
+        </h1>
+        <p class="desc" id="s1-ds">
+          Cada jornada trae nuevos desafíos. EstudiApp te da una visión clara de lo que necesitas hacer, desde el primer instante.
+        </p>
+        <div class="chips">
+          <div class="chip" id="s1-c1"><ion-icon name="today-outline"></ion-icon> Mi día</div>
+          <div class="chip" id="s1-c2"><ion-icon name="list-outline"></ion-icon> Tareas pendientes</div>
+          <div class="chip" id="s1-c3"><ion-icon name="notifications-outline"></ion-icon> Recordatorios</div>
+        </div>
+      </div>
+
+      <div class="phone-wrap" id="s1-ph">
+        <div class="phone-halo"></div>
+        <div class="badge b-tr" id="s1-b1">
+          <ion-icon name="checkmark-circle-outline"></ion-icon>
+          <div class="badge-info">
+            <span class="badge-title">3 tareas para hoy</span>
+            <span class="badge-sub">Cálculo · Programación · Química</span>
+          </div>
+        </div>
+        <div class="badge b-bl" id="s1-b2">
+          <ion-icon name="calendar-outline"></ion-icon>
+          <div class="badge-info">
+            <span class="badge-title">Evaluación mañana</span>
+            <span class="badge-sub">Cálculo II · 10:00 h</span>
+          </div>
+        </div>
+        <div class="phone">
+          <div class="phone-screen">
+            <!--
+              CAPTURA 1 — PANTALLA INICIO
+              Reemplaza este bloque <div class="ph">…</div> por:
+              <img src="cap1-inicio.png" alt="Inicio">
+            -->
+            <div class="ph">
+              <ion-icon name="home-outline"></ion-icon>
+              <div class="ph-name">Captura 1 · Inicio</div>
+              <div class="ph-hint">Mi Día con saludo, actividades y tareas pendientes</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════
+       S2 — CALENDARIO
+       cap: cap2-calendario.png
+  ════════════════════════════════ -->
+  <section class="scene" id="s2">
+    <div class="bg-num">02</div>
+    <div class="row row-rev">
+
+      <div class="txt">
+        <div class="eyebrow" id="s2-ey">
+          <span class="eyebrow-line"></span>Calendario
+        </div>
+        <h1 class="title" id="s2-tt">
+          Planifica.<br>Organiza.<br><span class="acc">Anticípate.</span>
+        </h1>
+        <p class="desc" id="s2-ds">
+          Visualiza tus clases, evaluaciones y actividades semana a semana. Tu planificación académica, siempre bajo control.
+        </p>
+        <div class="chips">
+          <div class="chip" id="s2-c1"><ion-icon name="calendar-outline"></ion-icon> Vista semanal</div>
+          <div class="chip" id="s2-c2"><ion-icon name="school-outline"></ion-icon> Bloques de clase</div>
+          <div class="chip" id="s2-c3"><ion-icon name="document-text-outline"></ion-icon> Evaluaciones</div>
+        </div>
+      </div>
+
+      <div class="phone-wrap" id="s2-ph">
+        <div class="phone-halo"></div>
+        <div class="badge b-mr" id="s2-b1">
+          <ion-icon name="time-outline"></ion-icon>
+          <div class="badge-info">
+            <span class="badge-title">Clase en 30 min</span>
+            <span class="badge-sub">Programación · Sala B-204</span>
+          </div>
+        </div>
+        <div class="badge b-bl" id="s2-b2">
+          <ion-icon name="alert-circle-outline"></ion-icon>
+          <div class="badge-info">
+            <span class="badge-title">Prueba en 2 días</span>
+            <span class="badge-sub">Cálculo II · Control 2</span>
+          </div>
+        </div>
+        <div class="phone">
+          <div class="phone-screen">
+            <!--
+              CAPTURA 2 — PANTALLA CALENDARIO
+              Reemplaza este bloque <div class="ph">…</div> por:
+              <img src="cap2-calendario.png" alt="Calendario">
+            -->
+            <div class="ph">
+              <ion-icon name="calendar-outline"></ion-icon>
+              <div class="ph-name">Captura 2 · Calendario</div>
+              <div class="ph-hint">Selector semanal con bloques de clase y agenda de evaluaciones</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════
+       S3 — ESTUDIO
+       cap: cap3-estudio.png
+  ════════════════════════════════ -->
+  <section class="scene" id="s3">
+    <div class="bg-num">03</div>
+    <div class="row">
+
+      <div class="txt">
+        <div class="eyebrow" id="s3-ey">
+          <span class="eyebrow-line"></span>Estudio
+        </div>
+        <h1 class="title" id="s3-tt">
+          Tu información<br>académica,<br><span class="acc">un solo lugar.</span>
+        </h1>
+        <p class="desc" id="s3-ds">
+          Accede a tus asignaturas, consulta tus evaluaciones y sigue tu progreso académico. Sin depender de otras herramientas.
+        </p>
+        <div class="chips">
+          <div class="chip" id="s3-c1"><ion-icon name="book-outline"></ion-icon> Asignaturas</div>
+          <div class="chip" id="s3-c2"><ion-icon name="trending-up-outline"></ion-icon> Notas y promedios</div>
+          <div class="chip" id="s3-c3"><ion-icon name="checkbox-outline"></ion-icon> Actividades</div>
+        </div>
+      </div>
+
+      <div class="phone-wrap" id="s3-ph">
+        <div class="phone-halo"></div>
+        <div class="badge b-tr" id="s3-b1">
+          <ion-icon name="trending-up-outline"></ion-icon>
+          <div class="badge-info">
+            <span class="badge-title">Promedio general 5.6</span>
+            <span class="badge-sub">4 ramos · Semestre actual</span>
+          </div>
+        </div>
+        <div class="badge b-bl" id="s3-b2">
+          <ion-icon name="trophy-outline"></ion-icon>
+          <div class="badge-info">
+            <span class="badge-title">Última nota: 6.2</span>
+            <span class="badge-sub">Programación · Control 1</span>
+          </div>
+        </div>
+        <div class="phone">
+          <div class="phone-screen">
+            <!--
+              CAPTURA 3 — PANTALLA ESTUDIO (tab Académico)
+              Reemplaza este bloque <div class="ph">…</div> por:
+              <img src="cap3-estudio.png" alt="Estudio">
+            -->
+            <div class="ph">
+              <ion-icon name="book-outline"></ion-icon>
+              <div class="ph-name">Captura 3 · Estudio</div>
+              <div class="ph-hint">Tab Académico: grid de ramos con colores y bento de evaluaciones</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════
+       S4 — BIBLIOTECA
+       cap: cap4-biblioteca.png
+  ════════════════════════════════ -->
+  <section class="scene" id="s4">
+    <div class="bg-num">04</div>
+    <div class="row row-rev">
+
+      <div class="txt">
+        <div class="eyebrow" id="s4-ey">
+          <span class="eyebrow-line"></span>Biblioteca
+        </div>
+        <h1 class="title" id="s4-tt">
+          Comparte recursos.<br><span class="acc">Aprende en<br>comunidad.</span>
+        </h1>
+        <p class="desc" id="s4-ds">
+          Organiza tus materiales, retoma tus lecturas y colabora con otros estudiantes mediante grupos de estudio compartidos.
+        </p>
+        <div class="chips">
+          <div class="chip" id="s4-c1"><ion-icon name="albums-outline"></ion-icon> Colecciones</div>
+          <div class="chip" id="s4-c2"><ion-icon name="people-outline"></ion-icon> Grupos de estudio</div>
+          <div class="chip" id="s4-c3"><ion-icon name="document-attach-outline"></ion-icon> Apuntes compartidos</div>
+        </div>
+      </div>
+
+      <div class="phone-wrap" id="s4-ph">
+        <div class="phone-halo"></div>
+        <div class="badge b-tr" id="s4-b1">
+          <ion-icon name="people-outline"></ion-icon>
+          <div class="badge-info">
+            <span class="badge-title">Grupo Cálculo II</span>
+            <span class="badge-sub">24 miembros · 8 archivos</span>
+          </div>
+        </div>
+        <div class="badge b-bl" id="s4-b2">
+          <ion-icon name="document-attach-outline"></ion-icon>
+          <div class="badge-info">
+            <span class="badge-title">Nueva colección compartida</span>
+            <span class="badge-sub">Apuntes de Química</span>
+          </div>
+        </div>
+        <div class="phone">
+          <div class="phone-screen">
+            <!--
+              CAPTURA 4 — PANTALLA BIBLIOTECA
+              Reemplaza este bloque <div class="ph">…</div> por:
+              <img src="cap4-biblioteca.png" alt="Biblioteca">
+            -->
+            <div class="ph">
+              <ion-icon name="library-outline"></ion-icon>
+              <div class="ph-name">Captura 4 · Biblioteca</div>
+              <div class="ph-hint">Colecciones, apuntes o detalle de grupo con miembros y archivos</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════
+       S5 — CIERRE (1 teléfono centrado)
+  ════════════════════════════════ -->
+  <section class="scene" id="s5">
+    <div class="row col">
+
+      <!-- 1 solo teléfono, mismo tamaño que las otras escenas -->
+      <div class="phone-wrap" id="s5-ph">
+        <div class="phone-halo"></div>
+        <div class="phone">
+          <div class="phone-screen">
+            <!--
+              CIERRE — pon aquí la captura que más represente la app
+              Reemplaza por: <img src="cap1-inicio.png" alt="EstudiApp">
+            -->
+            <div class="ph">
+              <ion-icon name="home-outline"></ion-icon>
+              <div class="ph-name">Cap 1 · Inicio</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Marca -->
+      <div class="close-wrap">
+        <div class="close-logo" id="s5-logo">EstudiApp</div>
+        <div class="close-tag"  id="s5-tag">Tu vida académica, conectada.</div>
+        <div class="close-pill" id="s5-pill">
+          <ion-icon name="school-outline"></ion-icon>
+          Organiza · Centraliza · Colabora
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- HUD -->
+  <div class="hud">
+    <div class="dot on" id="d1"></div>
+    <div class="dot"    id="d2"></div>
+    <div class="dot"    id="d3"></div>
+    <div class="dot"    id="d4"></div>
+    <div class="dot"    id="d5"></div>
+  </div>
+  <div class="hud-timer" id="tmr">00:00</div>
+  <div class="hud-hint">← · → · Espacio</div>
+</div>
+
+<script>
+// ───────────────────────────────
+//  CONFIG
+// ───────────────────────────────
+const SCENE_MS = 8000;
+const WIPE_HALF = 300;   // ms de cada mitad del wipe
+
+// ───────────────────────────────
+//  PARTÍCULAS
+// ───────────────────────────────
+(()=>{
+  const c = document.getElementById('pts');
+  for(let i=0;i<16;i++){
+    const p=document.createElement('div'); p.className='particle';
+    const s=Math.random()*3+1.5;
+    p.style.cssText=`width:${s}px;height:${s}px;left:${Math.random()*100}%;
+      animation-duration:${10+Math.random()*18}s;animation-delay:${Math.random()*15}s;
+      opacity:${.12+Math.random()*.3};`;
+    c.appendChild(p);
+  }
+})();
+
+// ───────────────────────────────
+//  ANIMACIÓN (Web Animations API)
+// ───────────────────────────────
+const E = 'cubic-bezier(0.16,1,0.3,1)';
+
+function anim(el, fr, to, {dur=500,delay=0,ease=E}={}){
+  if(!el) return;
+  el.animate([fr,to],{duration:dur,delay,easing:ease,fill:'forwards'});
+}
+
+// Fade-up suave (el más natural)
+function up(el,{d=0,ms=580}={}){
+  anim(el,
+    {opacity:0, transform:'translateY(20px)'},
+    {opacity:1, transform:'translateY(0)'},
+    {delay:d, dur:ms});
+}
+
+// Pop-in para chips y badges
+function pop(el,{d=0,ms=440}={}){
+  anim(el,
+    {opacity:0, transform:'scale(.84) translateY(8px)'},
+    {opacity:1, transform:'scale(1) translateY(0)'},
+    {delay:d, dur:ms});
+}
+
+// Slide desde la derecha (phone en escenas 1 y 3)
+function slideR(el,{d=0,ms=700}={}){
+  anim(el,
+    {opacity:0, transform:'translateX(50px) scale(.97)'},
+    {opacity:1, transform:'translateX(0) scale(1)'},
+    {delay:d, dur:ms});
+}
+
+// Slide desde la izquierda (phone en escenas 2 y 4)
+function slideL(el,{d=0,ms=700}={}){
+  anim(el,
+    {opacity:0, transform:'translateX(-50px) scale(.97)'},
+    {opacity:1, transform:'translateX(0) scale(1)'},
+    {delay:d, dur:ms});
+}
+
+// Float-up para el phone del cierre
+function floatUp(el,{d=0,ms=800}={}){
+  anim(el,
+    {opacity:0, transform:'translateY(50px) scale(.95)'},
+    {opacity:1, transform:'translateY(0) scale(1)'},
+    {delay:d, dur:ms});
+}
+
+// ───────────────────────────────
+//  ESCENAS
+// ───────────────────────────────
+const DELAY = 240; // base delay después del wipe
+
+const scenes = [
+  {
+    el:  document.getElementById('s1'),
+    dot: document.getElementById('d1'),
+    play(){
+      const b = DELAY;
+      up(document.getElementById('s1-ey'), {d:b, ms:460});
+      up(document.getElementById('s1-tt'), {d:b+100, ms:620});
+      up(document.getElementById('s1-ds'), {d:b+260, ms:580});
+      pop(document.getElementById('s1-c1'), {d:b+400});
+      pop(document.getElementById('s1-c2'), {d:b+510});
+      pop(document.getElementById('s1-c3'), {d:b+620});
+      slideR(document.getElementById('s1-ph'), {d:b+80});
+      pop(document.getElementById('s1-b1'), {d:b+760});
+      pop(document.getElementById('s1-b2'), {d:b+940});
+    }
+  },
+  {
+    el:  document.getElementById('s2'),
+    dot: document.getElementById('d2'),
+    play(){
+      const b = DELAY;
+      up(document.getElementById('s2-ey'), {d:b, ms:460});
+      up(document.getElementById('s2-tt'), {d:b+100, ms:620});
+      up(document.getElementById('s2-ds'), {d:b+260, ms:580});
+      pop(document.getElementById('s2-c1'), {d:b+400});
+      pop(document.getElementById('s2-c2'), {d:b+510});
+      pop(document.getElementById('s2-c3'), {d:b+620});
+      slideL(document.getElementById('s2-ph'), {d:b+80});
+      pop(document.getElementById('s2-b1'), {d:b+760});
+      pop(document.getElementById('s2-b2'), {d:b+940});
+    }
+  },
+  {
+    el:  document.getElementById('s3'),
+    dot: document.getElementById('d3'),
+    play(){
+      const b = DELAY;
+      up(document.getElementById('s3-ey'), {d:b, ms:460});
+      up(document.getElementById('s3-tt'), {d:b+100, ms:620});
+      up(document.getElementById('s3-ds'), {d:b+260, ms:580});
+      pop(document.getElementById('s3-c1'), {d:b+400});
+      pop(document.getElementById('s3-c2'), {d:b+510});
+      pop(document.getElementById('s3-c3'), {d:b+620});
+      slideR(document.getElementById('s3-ph'), {d:b+80});
+      pop(document.getElementById('s3-b1'), {d:b+760});
+      pop(document.getElementById('s3-b2'), {d:b+940});
+    }
+  },
+  {
+    el:  document.getElementById('s4'),
+    dot: document.getElementById('d4'),
+    play(){
+      const b = DELAY;
+      up(document.getElementById('s4-ey'), {d:b, ms:460});
+      up(document.getElementById('s4-tt'), {d:b+100, ms:620});
+      up(document.getElementById('s4-ds'), {d:b+260, ms:580});
+      pop(document.getElementById('s4-c1'), {d:b+400});
+      pop(document.getElementById('s4-c2'), {d:b+510});
+      pop(document.getElementById('s4-c3'), {d:b+620});
+      slideL(document.getElementById('s4-ph'), {d:b+80});
+      pop(document.getElementById('s4-b1'), {d:b+760});
+      pop(document.getElementById('s4-b2'), {d:b+940});
+    }
+  },
+  {
+    el:  document.getElementById('s5'),
+    dot: document.getElementById('d5'),
+    play(){
+      const b = DELAY;
+      floatUp(document.getElementById('s5-ph'), {d:b});
+      up(document.getElementById('s5-logo'), {d:b+480, ms:650});
+      up(document.getElementById('s5-tag'),  {d:b+640, ms:580});
+      up(document.getElementById('s5-pill'), {d:b+780, ms:580});
+    }
+  }
+];
+
+// ───────────────────────────────
+//  RESET de posiciones
+// ───────────────────────────────
+function reset(i){
+  const s = scenes[i];
+  s.el.querySelectorAll('.eyebrow,.title,.desc').forEach(e=>{
+    e.style.opacity='0'; e.style.transform='translateY(20px)';
+  });
+  s.el.querySelectorAll('.chip').forEach(e=>{
+    e.style.opacity='0'; e.style.transform='scale(.84) translateY(8px)';
+  });
+  s.el.querySelectorAll('.phone-wrap').forEach(e=>{ e.style.opacity='0'; });
+  s.el.querySelectorAll('.badge').forEach(e=>{
+    e.style.opacity='0'; e.style.transform='scale(.84)';
+  });
+  ['s5-logo','s5-tag','s5-pill'].forEach(id=>{
+    const e=document.getElementById(id);
+    if(e){ e.style.opacity='0'; e.style.transform='translateY(14px)'; }
+  });
+}
+
+// ───────────────────────────────
+//  LOOP
+// ───────────────────────────────
+let cur=0, loopId=null, tickId=null, elapsed=0;
+const wipe = document.getElementById('wipe');
+const tmr  = document.getElementById('tmr');
+
+function fmt(ms){ const s=Math.floor(ms/1e3),m=Math.floor(s/60); return `${String(m).padStart(2,'0')}:${String(s%60).padStart(2,'0')}`; }
+
+function startTick(){
+  clearInterval(tickId); elapsed=0; tmr.textContent=fmt(0);
+  tickId=setInterval(()=>{ elapsed+=100; tmr.textContent=fmt(elapsed); },100);
+}
+
+function goTo(next){
+  scenes[cur].el.classList.remove('active');
+  scenes[cur].dot.classList.remove('on');
+
+  wipe.style.transition=`transform ${WIPE_HALF}ms cubic-bezier(.76,0,.24,1)`;
+  wipe.style.transformOrigin='left';
+  wipe.style.transform='scaleX(1)';
+
+  setTimeout(()=>{
+    cur=next;
+    reset(cur);
+    scenes[cur].el.classList.add('active');
+    scenes[cur].dot.classList.add('on');
+
+    wipe.style.transformOrigin='right';
+    wipe.style.transform='scaleX(0)';
+
+    setTimeout(()=>{ scenes[cur].play(); startTick(); }, WIPE_HALF+40);
+  }, WIPE_HALF);
+}
+
+function next(){ goTo((cur+1)%scenes.length); }
+function prev(){ goTo((cur-1+scenes.length)%scenes.length); }
+
+function init(){
+  reset(0);
+  scenes[0].el.classList.add('active');
+  scenes[0].dot.classList.add('on');
+  setTimeout(()=>{ scenes[0].play(); startTick(); }, 80);
+  loopId = setInterval(next, SCENE_MS);
+}
+
+init();
+
+document.getElementById('stage').addEventListener('click',()=>{
+  clearInterval(loopId); next(); loopId=setInterval(next,SCENE_MS);
+});
+
+document.addEventListener('keydown', e=>{
+  if(e.key==='ArrowRight'||e.key===' '){ clearInterval(loopId); next(); loopId=setInterval(next,SCENE_MS); }
+  else if(e.key==='ArrowLeft')         { clearInterval(loopId); prev(); loopId=setInterval(next,SCENE_MS); }
+});
+</script>
+</body>
+</html>
